@@ -1,5 +1,5 @@
 RewriteEngine On
-RewriteBase /projet/TP-API/project/api/mon-api/
+RewriteBase /projet/TP-API/projet-r401/api/mon-api/
 
 # Gérer les requêtes HTTP GET avec des ID
 RewriteCond %{REQUEST_FILENAME} !-f

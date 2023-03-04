@@ -1,10 +1,8 @@
 <?php
-    require_once './Model/ConnexionDB.php';
     require_once './Model/ClientREST.php';
-    $db = ConnexionDB::getInstance();
 
     //Récupération des données
-    $client = new ClientREST('http://localhost//projet/TP-API/project/api/mon-api/');
+    $client = new ClientREST('http://localhost/projet/TP-API/projet-r401/api/mon-api/');
     $result = $client->get();
     echo '<pre>' . htmlspecialchars($result) . '</pre>';
     $result = json_decode($result, true);
