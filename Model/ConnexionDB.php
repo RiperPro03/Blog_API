@@ -65,7 +65,7 @@
                 $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 $this->db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
             } catch(PDOException $e) {
-                echo '<script>alert("Erreur de connetion à la base de donneés");</script>';
+                echo '<script>alert("Erreur de connetion à la base de donneés : '. $e .'");</script>';
                 exit;
             }
         }

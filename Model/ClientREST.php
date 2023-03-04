@@ -27,11 +27,15 @@
         /**
          * Constructeur de la classe ClientREST.
          * Initialise l'URL de l'API.
-         *
+         * Lève une exception si l'URL de l'API est invalide.
+         * 
          * @param string $urlAPI L'URL de l'API.
          * @access public
          */
         public function __construct($urlAPI) {
+            if (strpos(@get_headers($urlAPI)[0], '200') === false) {
+                throw new Exception("URL de l'API invalide");
+            }
             $this->urlAPI = $urlAPI;
         }
 
