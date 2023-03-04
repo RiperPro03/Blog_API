@@ -1,0 +1,75 @@
+.Card-Main-Box{
+    width: 700px;
+    margin: auto;
+    padding: 1%;
+    background: gray;
+    display: flex;
+    flex-direction: column;
+    margin-top: 2%;
+    border-radius: 15px;
+    background: #ffffff;
+    box-shadow:  32px 32px 84px #e0e0e0,
+                -32px -32px 84px #ffffff;
+}
+
+
+.Title{
+    font-size: 15px;
+    display: flex;
+}
+
+.Post-content{
+    font-size: 15px;
+    display: flex;
+}
+
+.Like-Dislike-Button{   
+    display: flex;
+}
+
+.Like-Dislike-Button a{   
+    color: #000000;
+    text-decoration: none;
+    margin: 0 10px 0 10px;
+    padding: 4px;
+    border-radius: 10px;
+    background: #ffffff;
+    border: solid 2px #000000;
+}
+
+.Like-Dislike-Button .Like:hover{
+    background: #29e166;
+    transition: 0.3s;
+}
+
+.Like-Dislike-Button .Dislike:hover{
+    background: #ff0000;
+    transition: 0.3s;
+}
+
+.Post-header{
+    display: flex;
+    justify-content: space-between;
+}
+
+.Post-content{
+    padding: 5px;
+    margin: 5px 0 10px 0;
+    display: flex;
+    border-radius: 5px;
+    flex-direction: column;
+    background: #ededed;
+}
+
+.Post-Footer{
+    display: flex;
+    justify-content: space-between;
+}
+
+.Post-Date{
+    display: inline-flex;
+}
+
+.Post-Date label{
+    margin-right: 5px;
+}

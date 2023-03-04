@@ -2,10 +2,11 @@
     require_once './Model/ClientREST.php';
 
     //Récupération des données
+    /*
     $client = new ClientREST('http://localhost/projet/TP-API/projet-r401/api/mon-api/');
     $result = $client->get();
     echo '<pre>' . htmlspecialchars($result) . '</pre>';
-    $result = json_decode($result, true);
+    $result = json_decode($result, true);*/
 ?>
 
 <!DOCTYPE html>
@@ -15,9 +16,17 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Client</title>
+    <link rel="stylesheet" href="./css/navbar.css">
+    <link rel="stylesheet" href="./css/client.css">
     <link rel="stylesheet" href="./css/mvp.css">
+    <link rel="stylesheet" href="./css/cartePost.css">
 </head>
 <body>
+    <?php
+        require './include/navBar.php'
+    ?>
+
+    <!--
     <a href="./">Home</a>
     <h1>API REST</h1>
     <div>
@@ -34,6 +43,7 @@
                 <th><a href="add.php"><button>Ajouter</button></a></th>
             </tr>
             <?php
+                /*
                 foreach ($result['data'] as $data) {
                     echo '<tr>';
                     echo '<td>' . (isset($data['id']) ? htmlspecialchars(strip_tags($data['id'])) : '') . '</td>';
@@ -49,10 +59,11 @@
                             </td>';
                     echo '</tr>';
                 }
-                
+                */
             ?>
         </table>
     </div>
+    -->
     
 </body>
 </html>

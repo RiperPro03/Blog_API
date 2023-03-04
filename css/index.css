@@ -1,0 +1,43 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body{
+    color: #000000;
+    margin: 0px;
+    padding: 0;
+}
+
+.contenuPrincipale{
+    max-width: 700px;
+    min-height: 100px;
+    margin: auto;
+    background: gray;
+    display: flex;
+    margin-top: 2%;
+    border-radius: 15px;
+    background: #ffffff;
+    box-shadow:  32px 32px 84px #e0e0e0,
+                -32px -32px 84px #ffffff;
+}
+
+.login-box{
+    margin-top: 5px;
+    margin-bottom: 5px;
+    display: inline-flex;
+    width: 50%;
+    justify-content: center;
+    border-right: solid #ff0000 1px;
+} 
+.Client-box{
+    margin-top: 5px;
+    margin-bottom: 5px;
+    display: inline-flex;
+    width: 50%;
+    justify-content: center;
+    border-left: solid #ff0000 1px;
+    
+}
