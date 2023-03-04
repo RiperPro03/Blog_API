@@ -22,6 +22,9 @@
         <div class="Client-box">
             <a href="./ClientAPI.php">Client</a>
         </div>
+        <div class="Client-box">
+            <a href="./testUI/testCartePost.php">TestPost</a>
+        </div>
        
     </div>
 </body>
