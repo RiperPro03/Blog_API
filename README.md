@@ -28,38 +28,64 @@ L'objectif général de ce projet est de proposer une solution pour la gestion d
 
 - Un utilisateur non authentifié peut :
     - Consulter les messages existants. Seules les informations suivantes doivent être disponibles : auteur, date de publication, contenu.
-    
-## API Reference
-
-#### Get all items
-
-```http
-  GET /api/items
-```
-
-| Parameter | Type     | Description                |
-| :-------- | :------- | :------------------------- |
-| `api_key` | `string` | **Required**. Your API key |
-
-#### Get item
-
-```http
-  GET /api/items/${id}
-```
-
-| Parameter | Type     | Description                       |
-| :-------- | :------- | :-------------------------------- |
-| `id`      | `string` | **Required**. Id of item to fetch |
-
-#### add(num1, num2)
-
-Takes two numbers and returns the sum.
 
 
-## Authors
+# Authors
 
 - [Christopher Asin](https://www.github.com/RiperPro03) 
 
 
 - [Henri JEZEQUEL](https://github.com/HenriJez)
 
+
+# API Auth
+
+### Get all auth items
+
+```http
+  GET /api/auth/items
+```
+
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `api_key` | `string` | **Required**. Your API key |
+
+### Get item
+
+```http
+  GET /api/auth/items/${id}
+```
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `id`      | `string` | **Required**. Id of item to fetch |
+
+### add(num1, num2)
+
+Takes two numbers and returns the sum.
+
+# API gestiArticle
+
+### Get all auth items
+
+```http
+  GET /api/gestiArticle/items
+```
+
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `api_key` | `string` | **Required**. Your API key |
+
+### Get item
+
+```http
+  GET /api/gestiArticle/items/${id}
+```
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `id`      | `string` | **Required**. Id of item to fetch |
+
+### add(num1, num2)
+
+Takes two numbers and returns the sum.
