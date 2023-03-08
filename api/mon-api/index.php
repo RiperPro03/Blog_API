@@ -1,4 +1,7 @@
 <?php
+    /// Récupération de la biliothèque JWT
+    require_once '../../Model/jwt_utils.php';
+
     /// Connexion à la base de données
     require_once '../../Model/ConnexionDB.php';
     $db = ConnexionDB::getInstance();
@@ -25,9 +28,24 @@
                     }
                     
                 } else {
+                    /// Vérification de la validité du token
+                    $bearer_token = '';
+                    $bearer_token = get_bearer_token();
+                    if ($bearer_token !== null) {
+                        if (!(is_jwt_valid($bearer_token))) throw new Exception("[MON API REST] GET request : Erreur token invalide.");
+                    } else {
+                        throw new Exception("[MON API REST] GET request : Erreur token invalide.");
+                    }
+
                     $q = $db->prepare("SELECT * FROM chuckn_facts");
                     $q->execute();
                     $matchingData = $q->fetchAll();
+
+                    $matchingData = [
+                        'token' => $bearer_token,
+                        'data' => $matchingData
+                    ];
+
                     
                 }
                 /// Envoi de la réponse au Client
@@ -208,6 +226,9 @@
                     $id = filter_var($_GET['id'], FILTER_SANITIZE_NUMBER_INT);
 
                     if (isId($id, $db)) {
+                        $bearer_token = '';
+                        $bearer_token = get_bearer_token();
+                        if (!(is_jwt_valid($bearer_token))) throw new Exception("[MON API REST] GET request : Erreur token invalide.");
                         $q = $db->prepare("DELETE FROM chuckn_facts WHERE id = :id");
                         $q->execute(['id' => $id]);
 

@@ -33,9 +33,6 @@
          * @access public
          */
         public function __construct($urlAPI) {
-            if (strpos(@get_headers($urlAPI)[0], '200') === false) {
-                throw new Exception("URL de l'API invalide");
-            }
             $this->urlAPI = $urlAPI;
         }
 
@@ -43,12 +40,20 @@
          * Effectue une requête HTTP GET sur l'API avec l'ID spécifié.
          *
          * @param int|null $id L'ID de l'élément à récupérer. Si null, retourne tous les éléments.
+         * @param string|null $token Le token d'authentification.
          * @return string Le résultat de la requête.
          * @access public
          */
-        public function get($id = null) {
+        public function get($id = null, $token = null) {
+            $headers = array(
+                'Content-Type: application/json',
+            );
+            if ($token !== null) {
+                $headers[] = 'Authorization: Bearer ' . $token;
+            }
             return file_get_contents($this->urlAPI . $id, false,
-                stream_context_create(array('http' => array('method' => 'GET'))));
+                stream_context_create(array('http' => array('method' => 'GET',
+                                                            'header' => implode("\r\n", $headers)))));
         }
 
         /**
@@ -58,9 +63,16 @@
          * @return string Le résultat de la requête.
          * @access public
          */
-        public function delete($id = null) {
+        public function delete($id = null, $token = null) {
+            $headers = array(
+                'Content-Type: application/json',
+            );
+            if ($token !== null) {
+                $headers[] = 'Authorization: Bearer ' . $token;
+            }
             return file_get_contents($this->urlAPI. $id, false,
-                stream_context_create(array('http' => array('method' => 'DELETE'))));
+                stream_context_create(array('http' => array('method' => 'DELETE',
+                                                            'header' => implode("\r\n", $headers)))));
         }
 
         /**
@@ -70,11 +82,18 @@
          * @return string Le résultat de la requête.
          * @access public
          */
-        public function post($data) {
+        public function post($data, $token = null) {
             $data_string = json_encode($data);
+            $headers = array(
+                'Content-Type: application/json',
+                'Content-Length: ' . strlen($data_string)
+            );
+            if ($token !== null) {
+            $headers[] = 'Authorization: Bearer ' . $token;
+            }
             return file_get_contents($this->urlAPI, false,
                 stream_context_create(array('http' => array('method' => 'POST', 'content' => $data_string,
-                    'header' => array('Content-Type: application/json' . "\r\n" . 'Content-Length: ' . strlen($data_string) . "\r\n")))));
+                    'header' => implode("\r\n", $headers)))));
         }
 
         /**
@@ -85,11 +104,18 @@
          * @return string Le résultat de la requête.
          * @access public
          */
-        public function put($id, $data) {
+        public function put($id, $data, $token = null) {
             $data_string = json_encode($data);
+            $headers = array(
+                'Content-Type: application/json',
+                'Content-Length: ' . strlen($data_string)
+            );
+            if ($token !== null) {
+            $headers[] = 'Authorization: Bearer ' . $token;
+            }
             return file_get_contents($this->urlAPI . $id, false,
                 stream_context_create(array('http' => array('method' => 'PUT', 'content' => $data_string,
-                    'header' => array('Content-Type: application/json' . "\r\n" . 'Content-Length: ' . strlen($data_string) . "\r\n")))));
+                    'header' => implode("\r\n", $headers)))));
         }
 
         /**
@@ -100,7 +126,7 @@
          * @return string Le résultat de la requête.
          * @access public
          */
-        public function patch($id, $data) {
+        public function patch($id, $data, $token = null) {
             $data_string = json_encode($data);
             return file_get_contents($this->urlAPI . $id, false,
                 stream_context_create(array('http' => array('method' => 'PATCH', 'content' => $data_string,

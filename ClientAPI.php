@@ -3,7 +3,12 @@
 
     //Récupération des données
     $client = new ClientREST('http://localhost/projet/TP-API/projet-r401/api/mon-api/');
-    $result = $client->get();
+    $client_auth = new ClientREST('http://localhost/projet/TP-API/projet-r401/api/auth/');
+    $r = $client_auth->post(array('username' => 'test', 'password' => ''));
+    echo '<pre>' . htmlspecialchars($r) . '</pre>';
+    $r = json_decode($r, true);
+    echo '<pre>' . htmlspecialchars($r['data']) . '</pre>';
+    $result = $client->get(null, $r['data']);
     echo '<pre>' . htmlspecialchars($result) . '</pre>';
     $result = json_decode($result, true);
 ?>
@@ -60,7 +65,6 @@
             ?>
         </table>
     </div>
-    -->
     
 </body>
 </html>
