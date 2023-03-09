@@ -40,29 +40,17 @@ L'objectif général de ce projet est de proposer une solution pour la gestion d
 
 # API Auth
 
-### Get all auth items
+### Générer un token
 
 ```http
-  GET /api/auth/items
+  POST /api/auth/
 ```
 
 | Parameter | Type     | Description                |
 | :-------- | :------- | :------------------------- |
-| `api_key` | `string` | **Required**. Your API key |
+| `username` | `string` | **Required**. Your username |
+| `password` | `string` | **Required**. Your password |
 
-### Get item
-
-```http
-  GET /api/auth/items/${id}
-```
-
-| Parameter | Type     | Description                       |
-| :-------- | :------- | :-------------------------------- |
-| `id`      | `string` | **Required**. Id of item to fetch |
-
-### add(num1, num2)
-
-Takes two numbers and returns the sum.
 
 # API gestiArticle
 

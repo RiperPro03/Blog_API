@@ -19,7 +19,7 @@
                 if (!empty($_GET['id'])) {
                     $id = filter_var($_GET['id'], FILTER_SANITIZE_NUMBER_INT);
                     
-                    if (isId($id, $db)) {
+                    if (isId($id, $db, "chuckn_facts")) {
                         $q = $db->prepare("SELECT * FROM chuckn_facts WHERE id = :id");
                         $q->execute(['id' => $id]);
                         $matchingData = $q->fetch();
@@ -36,12 +36,15 @@
                     } else {
                         throw new Exception("[MON API REST] GET request : Erreur token invalide.");
                     }
+                    /// Vérification du role de l'utilisateur
+                    if(get_role($bearer_token) !== "admin") throw new Exception("[MON API REST] GET request : Erreur vous n'avez pas les droits pour accéder à cette ressource.");
 
                     $q = $db->prepare("SELECT * FROM chuckn_facts");
                     $q->execute();
                     $matchingData = $q->fetchAll();
 
                     $matchingData = [
+                        'role' => get_role($bearer_token),
                         'token' => $bearer_token,
                         'data' => $matchingData
                     ];
@@ -76,7 +79,7 @@
                     'date_ajout' => date('Y-m-d H:i:s')
                 ]);
                 
-                $matchingData = lastData($db);
+                $matchingData = lastData($db, "chuckn_facts");
 
                 /// Envoi de la réponse au Client
                 deliver_response(201, "[MON API REST] POST request : enregistrement ok", $matchingData);
@@ -109,7 +112,7 @@
                 if (!empty($_GET['id'])) {
                     $id = filter_var($_GET['id'], FILTER_SANITIZE_NUMBER_INT);
 
-                    if (isId($id, $db)) {
+                    if (isId($id, $db, "chuckn_facts")) {
                         $sql = "UPDATE chuckn_facts SET";
                         $parametre = [];
 
@@ -185,7 +188,7 @@
                 if (!empty($_GET['id'])) {
                     $id = filter_var($_GET['id'], FILTER_SANITIZE_NUMBER_INT);
 
-                    if (isId($id, $db)) {
+                    if (isId($id, $db, "chuckn_facts")) {
                         $q = $db->prepare('UPDATE chuckn_facts SET phrase = :phrase, 
                                                                     vote = :vote, 
                                                                     faute = :faute, 
@@ -219,16 +222,23 @@
             break;
         /// Cas de la méthode DELETE
         case "DELETE":
-
             try {
                 /// Récupération de l'identifiant de la ressource envoyé par le Client
                 if (!empty($_GET['id'])) {
                     $id = filter_var($_GET['id'], FILTER_SANITIZE_NUMBER_INT);
 
-                    if (isId($id, $db)) {
+                    if (isId($id, $db,"chuckn_facts")) {
+                        /// Vérification de la validité du token
                         $bearer_token = '';
                         $bearer_token = get_bearer_token();
-                        if (!(is_jwt_valid($bearer_token))) throw new Exception("[MON API REST] GET request : Erreur token invalide.");
+                        if ($bearer_token !== null) {
+                            if (!(is_jwt_valid($bearer_token))) throw new Exception("[MON API REST] DELETE request : Erreur token invalide.");
+                        } else {
+                            throw new Exception("[MON API REST] DELETE request : Erreur token invalide.");
+                        }
+                        /// Vérification du role de l'utilisateur
+                        if(get_role($bearer_token) !== "admin") throw new Exception("[MON API REST] DELETE request : Erreur vous n'avez pas les droits pour accéder à cette ressource.");
+
                         $q = $db->prepare("DELETE FROM chuckn_facts WHERE id = :id");
                         $q->execute(['id' => $id]);
 
@@ -250,9 +260,13 @@
             deliver_response(405, "Méthode ". $http_method ." non autorisée", NULL);
             break;
     }
-    /// Envoi de la réponse au Client
-    function deliver_response($status, $status_message, $data)
-    {
+    /**
+     * Envoi de la réponse au Client
+     * @param int $status Le code de statut HTTP
+     * @param string $status_message Le message du statut HTTP
+     * @param array $data Les données à retourner
+     */
+    function deliver_response($status, $status_message, $data) {
         /// Paramétrage de l'entête HTTP, suite
         header("HTTP/1.1 $status $status_message");
         /// Paramétrage de la réponse retournée
@@ -264,9 +278,16 @@
         echo $json_response;
     }
 
-    // Vérifie si l'id existe
-    function isId($id, $db) {
-        $c = $db->prepare("SELECT id FROM chuckn_facts WHERE id = :id");
+    /**
+     * Vérifie si l'id existe dans la base de données dans une table définie
+     * @param int $id Identifiant de la ressource
+     * @param PDO $db Le lien de connexion à la base de données
+     * @param string $table La table dans laquelle on vérifie l'id
+     * @return bool Vrai si l'id existe, faux sinon
+     * @author Christopher ASIN <https://github.com/RiperPro03>
+     */
+    function isId($id, $db, $table) {
+        $c = $db->prepare("SELECT id FROM ". $table ." WHERE id = :id");
         $c->execute(['id' => $id]);
         $nbId = $c->rowCount();
 
@@ -277,9 +298,26 @@
         }
     }
 
-    // Récupère les données de la dernière insertion
-    function lastData($db) {
-        $c = $db->prepare("SELECT * FROM chuckn_facts WHERE id = :id");
+    /**
+     * Récupère les données de la dernière insertion dans une table définie
+     * @param PDO $db Le lien de connexion à la base de données
+     * @return array Les données de la dernière insertion
+     * @author Christopher ASIN <https://github.com/RiperPro03>
+     */
+    function lastData($db, $table) {
+        $c = $db->prepare("SELECT * FROM ". $table ." WHERE id = :id");
         $c->execute(['id' => $db->lastInsertId()]);
         return $c->fetch();
+    }
+
+    /**
+     * Récupérer le rôle d'un utilisateur à partir de son token JWT
+     * @param string $token Le token de l'utilisateur
+     * @return string Le rôle de l'utilisateur
+     */
+    function get_role($token) {
+        $tokenParts = explode('.', $token);
+        $payload = base64_decode($tokenParts[1]);
+        $role = json_decode($payload)->role;
+        return $role;
     }

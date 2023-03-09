@@ -48,6 +48,7 @@
                 ];
                 $payload = [
                     'username' => $username,
+                    'role' => $result['role'],
                     'exp' => time() + 3600
                 ];
                 $token = generate_jwt($headers, $payload);
@@ -66,9 +67,9 @@
     }
     /**
      * Envoi de la réponse au Client
-     * @param int $status Code de statut HTTP
-     * @param string $status_message Message de statut HTTP
-     * @param array $data Données à retourner au Client
+     * @param int $status Le code de statut HTTP
+     * @param string $status_message Le message du statut HTTP
+     * @param array $data Les données à retourner
      */
     function deliver_response($status, $status_message, $data)
     {
