@@ -45,7 +45,6 @@ L'objectif général de ce projet est de proposer une solution pour la gestion d
 ```http
   POST /api/auth/
 ```
-#### Envoyer un JSON avec les informations suivantes:
 | Parameter | Type     | Description                |
 | :-------- | :------- | :------------------------- |
 | `username` | `string` | **Required**. Votre username |
@@ -77,7 +76,6 @@ Role requis: publisher
 ```http
   POST /api/gestiArticle/
 ```
-#### Envoyer un JSON avec les informations suivantes:
 | Parameter | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
 | `title`      | `string` | **Required**. Titre de l'article |
