@@ -22,7 +22,7 @@
          * @param string $contenu Contenu de l'article
          * @access public
          */
-        function __construct($auteur,$datePubli,$titre,$contenu) {
+        public function __construct($auteur,$datePubli,$titre,$contenu) {
             $this->auteur = $auteur;
             $this->datePubli = $datePubli;
             $this->titre = $titre;
@@ -35,7 +35,7 @@
          * @return string Carte HTML de l'article
          * @access public
          */
-        function getCartePost() {
+        public function getCartePost() {
             return '"<div class="Card-Main-Box">
                         <div class="Post-header">
                             <div class="Title">
