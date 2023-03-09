@@ -40,40 +40,76 @@ L'objectif général de ce projet est de proposer une solution pour la gestion d
 
 # API Auth
 
-### Générer un token
+### Obtenir un token JWT
 
 ```http
   POST /api/auth/
 ```
-
+#### Envoyer un JSON avec les informations suivantes:
 | Parameter | Type     | Description                |
 | :-------- | :------- | :------------------------- |
-| `username` | `string` | **Required**. Your username |
-| `password` | `string` | **Required**. Your password |
+| `username` | `string` | **Required**. Votre username |
+| `password` | `string` | **Required**. Votre password |
 
 
 # API gestiArticle
 
-### Get all auth items
+### Récupérer tout les articles
 
 ```http
-  GET /api/gestiArticle/items
+  GET /api/gestiArticle/
 ```
 
-| Parameter | Type     | Description                |
-| :-------- | :------- | :------------------------- |
-| `api_key` | `string` | **Required**. Your API key |
-
-### Get item
+### Récupérer les articles à partir d'un id
 
 ```http
-  GET /api/gestiArticle/items/${id}
+  GET /api/gestiArticle/${id}
 ```
 
 | Parameter | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
-| `id`      | `string` | **Required**. Id of item to fetch |
+| `id`      | `string` | **Required**. Id de l'article à recherher |
 
-### add(num1, num2)
 
-Takes two numbers and returns the sum.
+### Créer un article
+Role requis: publisher
+
+```http
+  POST /api/gestiArticle/
+```
+#### Envoyer un JSON avec les informations suivantes:
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `title`      | `string` | **Required**. Titre de l'article |
+| `content`      | `string` | **Required**. Contenu de l'article |
+
+### Modifier un article
+Role requis: publisher ou moderator
+
+```http
+  PUT /api/gestiArticle/${id}
+```
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `id`      | `string` | **Required**. Id de l'article à modifier |
+| `title`      | `string` | **Required**. Titre de l'article |
+| `content`      | `string` | **Required**. Contenu de l'article |
+
+### Supprimer un article
+Role requis: publisher ou moderator
+
+```http
+  DELETE /api/gestiArticle/${id}
+```
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `id`      | `string` | **Required**. Id de l'article à supprimer |
+
+### Liker un article
+```http
+  PATCH /api/gestiArticle/${id}
+```	
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `id`      | `string` | **Required**. Id de l'article à liker |
+| `like`      | `boolean` | **Required**. true pour liker, false pour disliker |
