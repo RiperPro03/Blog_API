@@ -43,7 +43,6 @@
                     <a href="" class="Dislike">Dislike</a>
                 </div>
             </div>
-            
         </div>
     </div>
 </body>
