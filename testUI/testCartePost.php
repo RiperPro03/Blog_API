@@ -15,15 +15,18 @@
     ?>
     <div class="Main-Content">
         <div class="Card-Main-Box">
+            <div class="Card-Option">
+                <a href="" class="Modifier">Modifier</a>
+                <a href="" class="Supprimer">Supprimer</a>
+            </div>
             <div class="Post-header">
                 <div class="Title">
-                    <h3>Un échange</h3>
+                    <h3>Echange</h3>
                 </div>
-                <div>
-                    <div class="Post-author"><p>Jean marc</p></div>
+                <div class="Post-author">
+                    <p>Jean marc</p>
                 </div>
             </div>
-            
             <div class="Post-content">
                 <label>Message:</label>
                 <p>un test qui fonctionne bien comme il faut</p>
@@ -34,6 +37,8 @@
                     <p>21/02/2023</p>
                 </div>
                 <div class="Like-Dislike-Button">
+                    <p class="Like-vote">330 Like</p>
+                    <p class="Dislike-vote">400 Dislike</p>
                     <a href=""class="Like">Like</a>
                     <a href="" class="Dislike">Dislike</a>
                 </div>

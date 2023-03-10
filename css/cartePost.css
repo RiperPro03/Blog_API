@@ -15,7 +15,13 @@
 
 .Title{
     font-size: 15px;
+    width: 75%;
     display: flex;
+}
+
+.Post-author{
+    width: 25%;
+    text-align: end;
 }
 
 .Post-content{
@@ -47,6 +53,18 @@
     transition: 0.3s;
 }
 
+.Like-Dislike-Button p{   
+    margin: 0px 2px 0px 2px; 
+}
+
+.Like-Dislike-Button .Like-vote{  
+    color:#29e166 ;
+}
+
+.Like-Dislike-Button .Dislike-vote{  
+    color: #ff0000;
+}
+
 .Post-header{
     display: flex;
     justify-content: space-between;
@@ -72,4 +90,31 @@
 
 .Post-Date label{
     margin-right: 5px;
+}
+
+.Card-Option{
+    display: inline-flex;
+    justify-content: flex-end;
+}
+
+.Card-Option a {
+    text-decoration: none;
+    color: #000000;
+    margin-right: 1%;
+    margin-left: 1%;
+    margin-bottom: 1%;
+    padding: 0.5%;
+    border: #000000 solid 2px;
+    border-radius: 5px;
+    
+}
+
+.Card-Option .Modifier:hover{
+    background-color: #0000ff;
+    transition: 0.3s;
+}
+.Card-Option .Supprimer:hover{
+    background-color: #ff0000;
+    transition: 0.3s;
+
 }
