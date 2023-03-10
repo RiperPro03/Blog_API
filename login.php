@@ -1,12 +1,15 @@
 <?php
+    require_once './Model/ClientREST.php';
+    $client_auth = new ClientREST('http://localhost/projet/TP-API/projet-r401/api/auth/');
     if (isset($_POST['formlogin'])) {
 
         extract($_POST);
 
-        if (!empty($luser) && !empty($lpass)) {
-            echo '<script>alert("User : '. $luser .' Pass: '. $lpass .'");</script>';
-        } else {
-            echo '<script>alert("Veuiller remplir tout les champs");</script>';
+        if (!empty($user) && !empty($pass)) {
+            $result_token = $client_auth->post(array('username' => 'testModo', 'password' => 'iutinfo'));
+            $result_token = json_decode($result_token, true);
+            $_SESSION['token'] = $result_token['data'];
+            echo $_SESSION['token'];
         }
     }
 ?>
@@ -32,13 +35,13 @@
             <form method="post">
 
                 <div class="inputBox">
-                    <input type="text" name="luser" required="required" autocomplete="off">
+                    <input type="text" name="user" required="required" autocomplete="off">
                     <span>Utilisateur</span>
                     <i></i>
                 </div>
     
                 <div class="inputBox">
-                    <input type="password" name="lpass" required="required" autocomplete="off">
+                    <input type="password" name="pass" required="required" autocomplete="off">
                     <span>Mot de passe</span>
                     <i></i>
                 </div>

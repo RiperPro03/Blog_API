@@ -39,7 +39,7 @@
                 $result = $q->fetch();
 
                 if ($nb_user == 0) throw new Exception("[Auth] POST request : L'utilisateur n'existe pas.");
-                //if (!password_verify($password, $result['password'])) throw new Exception("[Auth] POST request : Le mot de passe est incorrect.");
+                if (!password_verify($password, $result['password'])) throw new Exception("[Auth] POST request : Le mot de passe est incorrect.");
 
                 /// Création du token
                 $headers = [

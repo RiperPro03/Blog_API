@@ -37,7 +37,7 @@
                         throw new Exception("[MON API REST] GET request : Erreur token invalide.");
                     }
                     /// Vérification du role de l'utilisateur
-                    if(get_role($bearer_token) !== "admin") throw new Exception("[MON API REST] GET request : Erreur vous n'avez pas les droits pour accéder à cette ressource.");
+                    if(get_role($bearer_token) !== "moderator") throw new Exception("[MON API REST] GET request : Erreur vous n'avez pas les droits pour accéder à cette ressource.");
 
                     $q = $db->prepare("SELECT * FROM chuckn_facts");
                     $q->execute();

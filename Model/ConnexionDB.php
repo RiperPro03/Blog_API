@@ -45,7 +45,7 @@
          * @var string
          * @access private
          */
-        private $DB_NAME = "api";
+        private $DB_NAME = "projet_r401";
 
         /**
          * Objet de connexion PDO
