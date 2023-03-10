@@ -9,24 +9,25 @@ body{
     color: #000000;
     margin: 0px;
     padding: 0;
+    background-color: #ff0000;
 }
 
 .contenuPrincipale{
     max-width: 700px;
-    min-height: 100px;
+    min-height: 500px;
     margin: auto;
     background: gray;
     display: flex;
-    margin-top: 2%;
+    margin-top: 5%;
     border-radius: 15px;
     background: #ffffff;
-    box-shadow:  32px 32px 84px #e0e0e0,
-                -32px -32px 84px #ffffff;
+    box-shadow: 0 4px 8px 0 #00000033, 0 6px 20px 0 #00000030;
 }
 
 .login-box{
     margin-top: 5px;
     margin-bottom: 5px;
+    padding-top: 35%;
     display: inline-flex;
     width: 50%;
     justify-content: center;
@@ -35,6 +36,7 @@ body{
 .Client-box{
     margin-top: 5px;
     margin-bottom: 5px;
+    padding-top: 35%;
     display: inline-flex;
     width: 50%;
     justify-content: center;
