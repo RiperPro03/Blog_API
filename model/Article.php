@@ -128,8 +128,8 @@
                             <div class="Like-Dislike-Button">
                                 <p class="Like-vote">'.$this->nbLike.' Like</p>
                                 <p class="Dislike-vote">'.$this->nbDislike.' Dislike</p>
-                                <a href="" class="Like">Like</a>
-                                <a href="" class="Dislike">Dislike</a>
+                                <a href="../like.php?id_pub='.$this->id_Pub.'" class="Like">Like</a>
+                                <a href="../dislike.php?id_pub='.$this->id_Pub.'" class="Dislike">Dislike</a>
                             </div>
                         </div>
                     </div>"';
