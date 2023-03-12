@@ -42,6 +42,7 @@
          * @param int|null $id L'ID de l'élément à récupérer. Si null, retourne tous les éléments.
          * @param string|null $token Le token d'authentification.
          * @return string Le résultat de la requête.
+         * @throws Exception Lève une exception si la requête échoue.
          * @access public
          */
         public function get($id = null, $token = null) {
@@ -51,9 +52,17 @@
             if ($token !== null) {
                 $headers[] = 'Authorization: Bearer ' . $token;
             }
-            return file_get_contents($this->urlAPI . $id, false,
+            $reponse = @file_get_contents($this->urlAPI . $id, false,
                 stream_context_create(array('http' => array('method' => 'GET',
                                                             'header' => implode("\r\n", $headers)))));
+
+            if ($reponse === false) {
+                $error = error_get_last();
+                $message = $error['message'];
+                $message = substr($message, strrpos($message, ':') + 1);
+                throw new Exception($message);
+            }
+            return $reponse;
         }
 
         /**
@@ -61,6 +70,7 @@
          *
          * @param int|null $id L'ID de l'élément à supprimer. Si null, supprime tous les éléments.
          * @return string Le résultat de la requête.
+         * @throws Exception Lève une exception si la requête échoue.
          * @access public
          */
         public function delete($id = null, $token = null) {
@@ -70,9 +80,17 @@
             if ($token !== null) {
                 $headers[] = 'Authorization: Bearer ' . $token;
             }
-            return file_get_contents($this->urlAPI. $id, false,
+            $reponse = @file_get_contents($this->urlAPI. $id, false,
                 stream_context_create(array('http' => array('method' => 'DELETE',
                                                             'header' => implode("\r\n", $headers)))));
+
+            if ($reponse === false) {
+                $error = error_get_last();
+                $message = $error['message'];
+                $message = substr($message, strrpos($message, ':') + 1);
+                throw new Exception($message);
+            }
+            return $reponse;
         }
 
         /**
@@ -80,6 +98,7 @@
          *
          * @param mixed $data Les données à envoyer dans la requête POST.
          * @return string Le résultat de la requête.
+         * @throws Exception Lève une exception si la requête échoue.
          * @access public
          */
         public function post($data, $token = null) {
@@ -91,9 +110,19 @@
             if ($token !== null) {
             $headers[] = 'Authorization: Bearer ' . $token;
             }
-            return file_get_contents($this->urlAPI, false,
-                stream_context_create(array('http' => array('method' => 'POST', 'content' => $data_string,
-                    'header' => implode("\r\n", $headers)))));
+
+            $reponse = @file_get_contents($this->urlAPI, false,
+                stream_context_create(array('http' => array('method' => 'POST', 
+                                                            'content' => $data_string,
+                                                            'header' => implode("\r\n", $headers)))));
+            
+            if ($reponse === false) {
+                $error = error_get_last();
+                $message = $error['message'];
+                $message = substr($message, strrpos($message, ':') + 1);
+                throw new Exception($message);
+            }
+            return $reponse;
         }
 
         /**
@@ -102,6 +131,7 @@
          * @param int $id L'ID de l'élément à modifier.
          * @param mixed $data Les données à envoyer dans la requête PUT.
          * @return string Le résultat de la requête.
+         * @throws Exception Lève une exception si la requête échoue.
          * @access public
          */
         public function put($id, $data, $token = null) {
@@ -113,9 +143,18 @@
             if ($token !== null) {
             $headers[] = 'Authorization: Bearer ' . $token;
             }
-            return file_get_contents($this->urlAPI . $id, false,
+
+            $reponse = @file_get_contents($this->urlAPI . $id, false,
                 stream_context_create(array('http' => array('method' => 'PUT', 'content' => $data_string,
                     'header' => implode("\r\n", $headers)))));
+
+            if ($reponse === false) {
+                $error = error_get_last();
+                $message = $error['message'];
+                $message = substr($message, strrpos($message, ':') + 1);
+                throw new Exception($message);
+            }
+            return $reponse;
         }
 
         /**
@@ -124,12 +163,21 @@
          * @param int $id L'ID de l'élément à modifier.
          * @param mixed $data Les données à envoyer dans la requête PATCH.
          * @return string Le résultat de la requête.
+         * @throws Exception Lève une exception si la requête échoue.
          * @access public
          */
         public function patch($id, $data, $token = null) {
             $data_string = json_encode($data);
-            return file_get_contents($this->urlAPI . $id, false,
+            $reponse = @file_get_contents($this->urlAPI . $id, false,
                 stream_context_create(array('http' => array('method' => 'PATCH', 'content' => $data_string,
                     'header' => array('Content-Type: application/json' . "\r\n" . 'Content-Length: ' . strlen($data_string) . "\r\n")))));
+
+            if ($reponse === false) {
+                $error = error_get_last();
+                $message = $error['message'];
+                $message = substr($message, strrpos($message, ':') + 1);
+                throw new Exception($message);
+            }
+            return $reponse;
         }
     }

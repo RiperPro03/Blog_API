@@ -33,8 +33,8 @@
             $this->datePubli = $datePubli;
             $this->titre = $titre;
             $this->contenu = $contenu;
-            $this->$nbLike = $nbLike;
-            $this->$nbDislike = $nbDislike;
+            $this->nbLike = $nbLike;
+            $this->nbDislike = $nbDislike;
         }
 
 

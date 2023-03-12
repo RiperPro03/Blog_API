@@ -1,9 +1,9 @@
 <?php
     /// Récupération de la biliothèque JWT
-    require_once '../../Model/jwt_utils.php';
+    require_once '../../model/jwt_utils.php';
 
     /// Connexion à la base de données
-    require_once '../../Model/ConnexionDB.php';
+    require_once '../../model/ConnexionDB.php';
     $db = ConnexionDB::getInstance();
     
     /// Paramétrage de l'entête HTTP (pour la réponse au Client)

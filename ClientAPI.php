@@ -3,7 +3,7 @@
 
     //Récupération des données
     $client = new ClientREST('http://localhost/projet/TP-API/projet-r401/api/mon-api/');
-    $client_auth = new ClientREST('http://localhost/projet/TP-API/projet-r401/api/auth/');
+    $client_auth = new ClientREST('https://blog-r401.go.yo.fr/api/auth/');
     $r = $client_auth->post(array('username' => 'testModo', 'password' => 'iutinfo'));
     echo '<pre>' . htmlspecialchars($r) . '</pre>';
     $r = json_decode($r, true);

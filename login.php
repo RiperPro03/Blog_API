@@ -6,10 +6,16 @@
         extract($_POST);
 
         if (!empty($user) && !empty($pass)) {
-            $result_token = $client_auth->post(array('username' => 'testModo', 'password' => 'iutinfo'));
-            $result_token = json_decode($result_token, true);
-            $_SESSION['token'] = $result_token['data'];
-            echo $_SESSION['token'];
+            try {
+                $result_token = $client_auth->post(array('username' => $user, 'password' => $pass));
+                if ($result_token) {
+                    $result_token = json_decode($result_token, true);
+                    $_SESSION['token'] = $result_token['data'];
+                    header('Location: index');
+                }
+            } catch (Exception $e) {
+                echo '<div class="error">' . $e->getMessage() . '</div>';
+            }
         }
     }
 ?>
@@ -25,8 +31,7 @@
 </head>
 <body>
     <div class="titre">
-        <h1> Lol Gestion</h1>
-        <h2><span>Gestion d'équipe esport</span><span>League Of Legends</span></h2>
+        <h1> Login</h1>
     </div>
     
     <div class="box">
