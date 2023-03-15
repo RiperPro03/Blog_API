@@ -1,5 +1,3 @@
-<?php
-?>
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -22,7 +20,6 @@
         <div class="Client-box">
             <a href="./testUI/testCartePost.php">TestPost</a>
         </div>
-       
     </div>
 </body>
 </html>
