@@ -34,6 +34,9 @@
          */
         public function __construct($urlAPI) {
             $this->urlAPI = $urlAPI;
+            if (!filter_var($this->urlAPI, FILTER_VALIDATE_URL)) {
+                throw new Exception('L\'URL de l\'API est invalide.');
+            }
         }
 
         /**

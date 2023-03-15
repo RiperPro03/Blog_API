@@ -92,6 +92,7 @@ function get_authorization_header(){
  * Récupération du token JWT dans l'entête HTTP.
  * Recherche dans l’entête HTTP l’attribut AUTHORIZATION ou HTTP_AUTHORIZATION.
  * @return string Le token JWT
+ * @return null Si aucun token JWT n'est trouvé
  */
 function get_bearer_token() {
     $headers = get_authorization_header();

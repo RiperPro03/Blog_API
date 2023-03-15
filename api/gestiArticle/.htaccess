@@ -1,0 +1,12 @@
+RewriteEngine On
+RewriteBase /projet/TP-API/projet-r401/api/gestiArticle/
+
+# Gérer les requêtes HTTP GET avec des ID
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^([^/]+)/?$ index.php?id=$1 [QSA,L]
+
+# Gérer les requêtes HTTP POST, PUT et DELETE
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.+)/?$ index.php?id=$1 [QSA,L]

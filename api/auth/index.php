@@ -9,6 +9,10 @@
     /// Paramétrage de l'entête HTTP (pour la réponse au Client)
     header("Content-Type:application/json");
 
+    /// Déclaration des constantes
+    const API_NAME = "Auth";
+    const SECRET_KEY = "iutinfo2023";
+
     /// Identification du type de méthode HTTP envoyée par le client
     $http_method = $_SERVER['REQUEST_METHOD'];
     switch ($http_method) {
@@ -17,14 +21,14 @@
             try {
                 /// Récupération des données envoyées par le Client
                 $postedData = file_get_contents('php://input');
-                if ($postedData === false) throw new Exception("[Auth] POST request : Erreur lors de la récupération des données.");
+                if ($postedData === false) throw new Exception("[". API_NAME ."] POST request : Erreur lors de la récupération des données.");
 
                 $json_data = json_decode($postedData, true);
-                if (is_null($json_data)) throw new Exception("[Auth] POST request : Erreur lors du décodage des données.");
+                if (is_null($json_data)) throw new Exception("[". API_NAME ."] POST request : Erreur lors du décodage des données.");
 
                 $postedData = $json_data;
-                if (!isset($postedData['username'])) throw new Exception("[Auth] POST request : Erreur vous devez donner une clé username.");
-                if (!isset($postedData['password'])) throw new Exception("[Auth] POST request : Erreur vous devez donner une clé password.");
+                if (!isset($postedData['username'])) throw new Exception("[". API_NAME ."] POST request : Erreur vous devez donner une clé username.");
+                if (!isset($postedData['password'])) throw new Exception("[". API_NAME ."] POST request : Erreur vous devez donner une clé password.");
 
                 /// Evité la faille XSS
                 $username = htmlspecialchars($postedData['username'], ENT_QUOTES, 'UTF-8');
@@ -38,8 +42,8 @@
                 $nb_user = $q->rowCount();
                 $result = $q->fetch();
 
-                if ($nb_user == 0) throw new Exception("[Auth] POST request : L'utilisateur n'existe pas.");
-                if (!password_verify($password, $result['password'])) throw new Exception("[Auth] POST request : Le mot de passe est incorrect.");
+                if ($nb_user == 0) throw new Exception("[". API_NAME ."] POST request : L'utilisateur n'existe pas.");
+                if (!password_verify($password, $result['password'])) throw new Exception("[". API_NAME ."] POST request : Le mot de passe est incorrect.");
 
                 /// Création du token
                 $headers = [
@@ -47,14 +51,15 @@
                     'typ' => 'JWT'
                 ];
                 $payload = [
+                    'id_user' => $result['id_user'],
                     'username' => $username,
                     'role' => $result['role'],
                     'exp' => time() + 3600
                 ];
-                $token = generate_jwt($headers, $payload);
+                $token = generate_jwt($headers, $payload, SECRET_KEY);
 
                 /// Envoi de la réponse au Client
-                deliver_response(200, "[Auth] POST request : Authentification OK", $token);
+                deliver_response(200, "[". API_NAME ."] POST request : Authentification OK", $token);
             } catch (Exception $e) {
                 deliver_response(400, $e->getMessage(), NULL);
             }
@@ -62,7 +67,7 @@
         /// Cas par défaut
         default:
             /// Envoi de la réponse au Client
-            deliver_response(405, "Méthode ". $http_method ." non autorisée", NULL);
+            deliver_response(405, "[". API_NAME ."] Méthode ". $http_method ." non autorisée", NULL);
             break;
     }
     /**
