@@ -5,6 +5,9 @@
     font-family: 'Poppins', sans-serif;
 }
 
+body{
+    background: linear-gradient(130deg,#e7e7e7,#e0e0e0);
+}
 .Main-Content{
     padding-bottom: 50px;
     display: flex;

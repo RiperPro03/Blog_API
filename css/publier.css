@@ -1,0 +1,83 @@
+.Main-Write-Box {
+    padding: 2% 5% 2% 5%;
+    margin-top: 5%;
+    width: 100%;
+    min-height: 500px;
+    border-radius: 15px;
+    background: #ffffff;
+    box-shadow:  32px 32px 84px #e0e0e0,
+                -32px -32px 84px #ffffff;
+}
+
+.Main-Write-Box h2{
+    text-align: center;
+    margin-bottom: 5%;
+}
+
+.Post-Field{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 80%;
+}
+
+.Post-Field label{
+    font-size:20px;
+    margin-right: 2%;
+}
+
+.Post-Field .Input{
+    border: solid 2px #000000;
+    background: #e0e0e0;
+    border-radius: 15px;
+}
+
+.Edit-Post-Title{
+    width: 100%;
+    display: inline-flex;
+    margin-bottom: 5%;
+    justify-content: center;
+}
+
+.Input-titre{
+    width: 80%;
+    padding: 0 2% 0 2%;
+}
+
+.Input-Content{
+    width: 80%;
+    height: 100%;
+    padding: 1% 2% 0 2%;
+
+}
+
+.Edit-Post-Content{
+    width: 100%;
+    height: 60%;
+    display: inline-flex;
+    margin-bottom: 5%;
+}
+
+.Edit-post-option{
+    
+    display: inline-flex;
+    justify-content: space-around;
+}
+.Edit-post-option-button{
+    display: inline-flex;
+    width: 7%;
+    justify-content: center;
+    padding: 0.5%;
+    font-size: 15px;
+    border-radius: 15px;
+    background: #ffffff;
+    border: solid 2px #000000;
+}
+
+.Valider:hover{
+    background: #29e166;
+}
+
+.Annuler:hover{
+    background: #ff0000;
+}
