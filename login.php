@@ -26,33 +26,33 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LoL Gestion | Connexion</title>
+    <title>Connexion</title>
     <link rel="stylesheet" href="./css/login.css">
+    <link rel="stylesheet" href="./css/page.css">
 </head>
 <body>
-    <div class="titre">
-        <h1> Login</h1>
-    </div>
-    
-    <div class="box">
-        <div class="form">
-            <h2>Connexion</h2>
-            <form method="post">
-
-                <div class="inputBox">
-                    <input type="text" name="user" required="required" autocomplete="off">
-                    <span>Utilisateur</span>
-                    <i></i>
+    <div class="Main-Content">
+        <div class="box">
+            <div class="form">
+                <div class="titre">
+                    <h1>Connexion</h1>
                 </div>
-    
-                <div class="inputBox">
-                    <input type="password" name="pass" required="required" autocomplete="off">
-                    <span>Mot de passe</span>
-                    <i></i>
-                </div>
-                <input type="submit" value="Connexion" name="formlogin">
-            </form>
+                <form method="post">
+                    <div class="inputBox">
+                        <span>Identifiant </span>
+                        <input type="text" name="user" required="required" autocomplete="off">
+                    </div>
+        
+                    <div class="inputBox">
+                        <span>Mot de passe</span>
+                        <input type="password" name="pass" required="required" autocomplete="off">
+                    </div>
+                    <div class="Option-login">
+                        <a href="" class="Option-login-button Annuler">Annuler</a>
+                        <input type="submit" value="Connexion" name="formlogin" class="Option-login-button Connexion">
+                    </div>
+                </form>
+            </div>
         </div>
-    </div>
-    
+    </div>    
 </body>
