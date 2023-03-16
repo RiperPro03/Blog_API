@@ -23,7 +23,7 @@
                 if (!empty($_GET['id'])) {
                     $id = filter_var($_GET['id'], FILTER_SANITIZE_NUMBER_INT);
                     
-                    if (isId($id, $db)) {
+                    if (is_Id($id, $db)) {
                         $q = $db->prepare("SELECT * FROM posts WHERE id_user = :id_user");
                         $q->execute(['id_user' => $id]);
                         $matchingData = $q->fetch();
@@ -48,7 +48,6 @@
                 /// Récupération des données envoyées par le Client
                 $postedData = file_get_contents('php://input');
                 if ($postedData === false) throw new Exception("[". API_NAME ."] ". $http_method ." request : Erreur lors de la récupération des données.");
-                
                 $json_data = json_decode($postedData, true);
                 if (is_null($json_data)) throw new Exception("[". API_NAME ."] ". $http_method ." request : Erreur lors du décodage des données.");
                 
@@ -64,7 +63,8 @@
                 validation_token($bearer_token, $http_method);
                 
                 /// Vérification du role de l'utilisateur (publisher ou moderator)
-                if(get_role_token($bearer_token) !== "publisher" && get_role_token($bearer_token) !== "moderator") throw new Exception("[". API_NAME ."] ". $http_method ." request : Erreur vous n'avez pas les droits pour accéder à cette ressource.");
+                if(get_role_token($bearer_token) !== "publisher" && get_role_token($bearer_token) !== "moderator") 
+                    throw new Exception("[". API_NAME ."] ". $http_method ." request : Erreur vous n'avez pas les droits pour accéder à ce post.");
 
                 $q = $db->prepare("INSERT INTO posts (title, contenu, date_ajout, id_user) 
                                     VALUE (:title, :contenu, :date_ajout, :id_user)");
@@ -88,53 +88,52 @@
             try {
                 /// Récupération des données envoyées par le Client
                 $postedData = file_get_contents('php://input');
-                if ($postedData === false) throw new Exception("[". API_NAME ."] PATCH request : Erreur lors de la récupération des données.");
-
+                if ($postedData === false) throw new Exception("[". API_NAME ."] ". $http_method ." request : Erreur lors de la récupération des données.");
                 $json_data = json_decode($postedData, true);
-                if (is_null($json_data)) throw new Exception("[". API_NAME ."] PATCH request : Erreur lors du décodage des données.");
+                if (is_null($json_data)) throw new Exception("[". API_NAME ."] ". $http_method ." request : Erreur lors du décodage des données.");
 
                 //Eviter la faille XSS
                 $postedData = $json_data;
-                if (!isset($postedData['phrase']) && !isset($postedData['vote']) && !isset($postedData['faute']) && !isset($postedData['signalement'])) {
-                    throw new Exception("[". API_NAME ."] PATCH request : Erreur vous devez donner au moins une des clés suivantes : phrase, vote, faute, signalement.");
+                if (!isset($postedData['title']) && !isset($postedData['content'])) {
+                    throw new Exception("[". API_NAME ."] ". $http_method ." request : Erreur vous devez donner au moins une des clés suivantes : title, content.");
                 }
                 
                 //Eviter la faille XSS
-                $phrase = isset($postedData['phrase']) ? htmlspecialchars($postedData['phrase'], ENT_QUOTES, 'UTF-8') : null;
-                $vote = isset($postedData['vote']) ? htmlspecialchars($postedData['vote'], ENT_QUOTES, 'UTF-8') : null;
-                $faute = isset($postedData['faute']) ? htmlspecialchars($postedData['faute'], ENT_QUOTES, 'UTF-8') : null;
-                $signalement = isset($postedData['signalement']) ? htmlspecialchars($postedData['signalement'], ENT_QUOTES, 'UTF-8') : null;
+                $title = isset($postedData['title']) ? htmlspecialchars($postedData['title'], ENT_QUOTES, 'UTF-8') : null;
+                $content = isset($postedData['content']) ? htmlspecialchars($postedData['content'], ENT_QUOTES, 'UTF-8') : null;
+
+                /// Vérification de la validité du token
+                $bearer_token = get_bearer_token();
+                validation_token($bearer_token, $http_method);
+                
+                /// Vérification du role de l'utilisateur (publisher ou moderator)
+                if(get_role_token($bearer_token) !== "publisher" && get_role_token($bearer_token) !== "moderator") 
+                    throw new Exception("[". API_NAME ."] ". $http_method ." request : Erreur vous n'avez pas les droits pour accéder à ce post.");
 
                 if (!empty($_GET['id'])) {
                     $id = filter_var($_GET['id'], FILTER_SANITIZE_NUMBER_INT);
 
-                    if (isId($id, $db, "chuckn_facts")) {
-                        $sql = "UPDATE chuckn_facts SET";
+                    if (is_Id($id, $db)) {
+                        /// Vérification de l'appartenance de l'utilisateur au post pour les publishers
+                        if(!is_owner($bearer_token, $db, $id) && get_role_token($bearer_token) === "publisher")
+                            throw new Exception("[". API_NAME ."] ". $http_method ." request : Erreur vous n'avez pas les droits pour accéder à ce post.");
+
+                        $sql = "UPDATE posts SET";
                         $parametre = [];
 
-                        if (isset($phrase)) {
-                            $sql .= " phrase = :phrase,";
-                            $parametre['phrase'] = $phrase;
+                        if (isset($title)) {
+                            $sql .= " title = :title,";
+                            $parametre['title'] = $title;
                         }
 
-                        if (isset($vote)) {
-                            $sql .= " vote = :vote,";
-                            $parametre['vote'] = $vote;
-                        }
-
-                        if (isset($faute)) {
-                            $sql .= " faute = :faute,";
-                            $parametre['faute'] = $faute;
-                        }
-
-                        if (isset($signalement)) {
-                            $sql .= " signalement = :signalement,";
-                            $parametre['signalement'] = $signalement;
+                        if (isset($content)) {
+                            $sql .= " content = :content,";
+                            $parametre['content'] = $content;
                         }
 
                         $sql = rtrim($sql, ', ');
-                        $sql .= ", date_modif = :date_modif WHERE id = :id";
-                        $parametre['id'] = $id;
+                        $sql .= ", date_modif = :date_modif WHERE id_post = :id_post";
+                        $parametre['id_post'] = $id;
                         $parametre['date_modif'] = date('Y-m-d H:i:s');
 
                         var_dump($sql);
@@ -144,73 +143,79 @@
                         $q->execute($parametre);
 
 
-                        $c = $db->prepare("SELECT * FROM chuckn_facts WHERE id = :id");
-                        $c->execute(['id' => $id]);
+                        $c = $db->prepare("SELECT * FROM posts WHERE id_post = :id_post");
+                        $c->execute(['id_post' => $id]);
                         $matchingData = $c->fetch();
 
                         /// Envoi de la réponse au Client
-                        deliver_response(200, "[". API_NAME ."] PATCH request : mise à jour ok", $matchingData);
+                        deliver_response(200, "[". API_NAME ."] ". $http_method ." request : mise à jour ok", $matchingData);
                     } else {
-                        throw new Exception("[". API_NAME ."] PATCH request : Aucune phrase ne correspond à cet identifiant.");
+                        throw new Exception("[". API_NAME ."] ". $http_method ." request : Aucune phrase ne correspond à cet identifiant.");
                     }
                 } else {
-                    throw new Exception("[". API_NAME ."] PATCH request : Identifiant id est requis.");
+                    throw new Exception("[". API_NAME ."] ". $http_method ." request : Identifiant id est requis.");
                 }
             } catch (Exception $e) {
                 deliver_response(400, $e->getMessage(), NULL);
             }
             break;
+        /// Cas de la méthode PUT
         case "PUT":
             try {
                 /// Récupération des données envoyées par le Client
                 $postedData = file_get_contents('php://input');
-                if ($postedData === false) throw new Exception("[". API_NAME ."] PUT request : Erreur lors de la récupération des données.");
-
+                if ($postedData === false) throw new Exception("[". API_NAME ."] ". $http_method ." request : Erreur lors de la récupération des données.");
                 $json_data = json_decode($postedData, true);
-                if (is_null($json_data)) throw new Exception("[". API_NAME ."] PUT request : Erreur lors du décodage des données.");
+                if (is_null($json_data)) throw new Exception("[". API_NAME ."] ". $http_method ." request : Erreur lors du décodage des données.");
 
                 //Eviter la faille XSS
                 $postedData = $json_data;
-                if (!isset($postedData['phrase']) || !isset($postedData['vote']) || !isset($postedData['faute']) || !isset($postedData['signalement'])) {
-                    throw new Exception("[". API_NAME ."] PUT request : Erreur vous devez donner les clés suivantes : phrase, vote, faute, signalement.");
+                if (!isset($postedData['title']) || !isset($postedData['content'])) {
+                    throw new Exception("[". API_NAME ."] ". $http_method ." request : Erreur vous devez donner les clés suivantes : title, content.");
                 }
+                $title = htmlspecialchars($postedData['title'], ENT_QUOTES, 'UTF-8');
+                $content = htmlspecialchars($postedData['content'], ENT_QUOTES, 'UTF-8');
+
+                /// Vérification de la validité du token
+                $bearer_token = get_bearer_token();
+                validation_token($bearer_token, $http_method);
                 
-                //Eviter la faille XSS
-                $phrase = htmlspecialchars($postedData['phrase'], ENT_QUOTES, 'UTF-8');
-                $vote = htmlspecialchars($postedData['vote'], ENT_QUOTES, 'UTF-8');
-                $faute = htmlspecialchars($postedData['faute'], ENT_QUOTES, 'UTF-8');
-                $signalement = htmlspecialchars($postedData['signalement'], ENT_QUOTES, 'UTF-8');
+                /// Vérification du role de l'utilisateur (publisher ou moderator)
+                if(get_role_token($bearer_token) !== "publisher" && get_role_token($bearer_token) !== "moderator") 
+                    throw new Exception("[". API_NAME ."] ". $http_method ." request : Erreur vous n'avez pas les droits pour accéder à ce post.");
+                
+                
 
                 if (!empty($_GET['id'])) {
                     $id = filter_var($_GET['id'], FILTER_SANITIZE_NUMBER_INT);
 
-                    if (isId($id, $db, "chuckn_facts")) {
-                        $q = $db->prepare('UPDATE chuckn_facts SET phrase = :phrase, 
-                                                                    vote = :vote, 
-                                                                    faute = :faute, 
-                                                                    signalement = :signalement, 
-                                                                    date_modif = :date_modif 
-                                                                    WHERE id = :id');
+                    if (is_Id($id, $db)) {
+                        /// Vérification de l'appartenance de l'utilisateur au post pour les publishers
+                        if(!is_owner($bearer_token, $db, $id) && get_role_token($bearer_token) === "publisher")
+                            throw new Exception("[". API_NAME ."] ". $http_method ." request : Erreur vous n'avez pas les droits pour accéder à ce post.");
+
+                        $q = $db->prepare('UPDATE posts SET title = :title, 
+                                                            content = :content, 
+                                                            date_modif = :date_modif
+                                                            WHERE id_post = :id_post');
                         $q->execute([
-                            'phrase' => $phrase,
-                            'vote' => $vote,
-                            'faute' => $faute,
-                            'signalement' => $signalement,
-                            'date_modif' => date('Y-m-d H:i:s'),
-                            'id' => $id
+                            'title' => $title,
+                            'content' => $content,
+                            'id_post' => $id,
+                            'date_modif' => date('Y-m-d H:i:s')
                         ]);
 
-                        $c = $db->prepare("SELECT * FROM chuckn_facts WHERE id = :id");
-                        $c->execute(['id' => $id]);
+                        $c = $db->prepare("SELECT * FROM posts WHERE id_post = :id_post");
+                        $c->execute(['id_post' => $id]);
                         $matchingData = $c->fetch();
 
                         /// Envoi de la réponse au Client
-                        deliver_response(200, "[". API_NAME ."] PUT request : mise à jour ok", $matchingData);
+                        deliver_response(200, "[". API_NAME ."] ". $http_method ." request : mise à jour ok", $matchingData);
                     } else {
-                        throw new Exception("[". API_NAME ."] PUT request : Aucune phrase ne correspond à cet identifiant.");
+                        throw new Exception("[". API_NAME ."] ". $http_method ." request : Aucune phrase ne correspond à cet identifiant.");
                     }
                 } else {
-                    throw new Exception("[". API_NAME ."] PUT request : Identifiant id est requis.");
+                    throw new Exception("[". API_NAME ."] ". $http_method ." request : Identifiant id est requis.");
                 }
             } catch (Exception $e) {
                 deliver_response(400, $e->getMessage(), NULL);
@@ -219,27 +224,41 @@
         /// Cas de la méthode DELETE
         case "DELETE":
             try {
+
+                /// Vérification de la validité du token
+                $bearer_token = get_bearer_token();
+                validation_token($bearer_token, $http_method);
+                
+                /// Vérification du role de l'utilisateur (publisher ou moderator)
+                if(get_role_token($bearer_token) !== "publisher" && get_role_token($bearer_token) !== "moderator") 
+                    throw new Exception("[". API_NAME ."] ". $http_method ." request : Erreur vous n'avez pas les droits pour accéder à ce post.");
+
                 /// Récupération de l'identifiant de la ressource envoyé par le Client
                 if (!empty($_GET['id'])) {
                     $id = filter_var($_GET['id'], FILTER_SANITIZE_NUMBER_INT);
 
-                    if (isId($id, $db,"chuckn_facts")) {
-                        /// Vérification de la validité du token
-                        $bearer_token = get_bearer_token();
-                        validation_token($bearer_token, $http_method);
-                        /// Vérification du role de l'utilisateur
-                        if(get_role_token($bearer_token) !== "admin") throw new Exception("[". API_NAME ."] DELETE request : Erreur vous n'avez pas les droits pour accéder à cette ressource.");
+                    if (is_Id($id, $db)) {
 
-                        $q = $db->prepare("DELETE FROM chuckn_facts WHERE id = :id");
-                        $q->execute(['id' => $id]);
+                        /// Vérification de l'appartenance de l'utilisateur au post pour les publishers
+                        if(!is_owner($bearer_token, $db, $id) && get_role_token($bearer_token) === "publisher")
+                            throw new Exception("[". API_NAME ."] ". $http_method ." request : Erreur vous n'avez pas les droits pour accéder à ce post.");
+
+                        /// Récupération des données de la ressource à supprimer
+                        $c = $db->prepare("SELECT * FROM posts WHERE id_post = :id_post");
+                        $c->execute(['id_post' => $id]);
+                        $matchingData = $c->fetch();
+                        
+                        /// Suppression de la ressource
+                        $q = $db->prepare("DELETE FROM posts WHERE id_post = :id_post");
+                        $q->execute(['id_post' => $id]);
 
                         /// Envoi de la réponse au Client
-                        deliver_response(200, "[". API_NAME ."] DELETE request : OK", NULL);
+                        deliver_response(200, "[". API_NAME ."] ". $http_method ." request : Post supprimé OK : ", $matchingData);
                     } else {
-                        throw new Exception("[". API_NAME ."] DELETE request : Aucune phrase ne correspond à cet identifiant.");
+                        throw new Exception("[". API_NAME ."] ". $http_method ." request : Aucune phrase ne correspond à cet identifiant.");
                     }
                 } else {
-                    throw new Exception("[". API_NAME ."] DELETE request : Identifiant id est requis.");
+                    throw new Exception("[". API_NAME ."] ". $http_method ." request : Identifiant id est requis.");
                 }
             } catch (Exception $e) {
                 deliver_response(404, $e->getMessage(), NULL);
@@ -251,6 +270,7 @@
             deliver_response(405, "[". API_NAME ."] Méthode ". $http_method ." non autorisée", NULL);
             break;
     }
+
     /**
      * Envoi de la réponse au Client
      * @param int $status Le code de statut HTTP
@@ -276,7 +296,7 @@
      * @return bool Vrai si l'id existe, faux sinon
      * @author Christopher ASIN <https://github.com/RiperPro03>
      */
-    function isId($id, $db) {
+    function is_Id($id, $db) {
         $c = $db->prepare("SELECT id_post FROM post WHERE id_post = :id_post");
         $c->execute(['id_post' => $id]);
         $nbId = $c->rowCount();
@@ -344,11 +364,31 @@
      * @param string $token Le token JWT
      * @param string $http_method La méthode HTTP
      * @throws Exception Si le token n'est pas valide
+     * @author Christopher ASIN <https://github.com/RiperPro03>
      */
     function validation_token($bearer_token, $http_method) {
         if ($bearer_token !== null && is_jwt_valid($bearer_token, SECRET_KEY)) {
             return true;
         } else {
             throw new Exception("[". API_NAME ."] ". $http_method ." request : Erreur token invalide.");
+        }
+    }
+
+    /**
+     * Vérifie si le post appartient à l'utilisateur
+     * @param string $token Le token JWT
+     * @param PDO $db Le lien de connexion à la base de données
+     * @return bool Vrai si le post appartient à l'utilisateur, faux sinon
+     * @author Christopher ASIN <https://github.com/RiperPro03>
+     */
+    function is_owner($token, $db, $id_post) {
+        $q = $db->prepare("SELECT id_user FROM post WHERE id_user = :id_user AND id_post = :id_post");
+        $q->execute(['id_user' => get_id_token($token), 'id_post' => $id_post]);
+        $nbId = $q->rowCount();
+
+        if ($nbId == 1) {
+            return true;
+        } else {
+            return false;
         }
     }
