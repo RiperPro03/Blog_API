@@ -14,7 +14,7 @@
         <div class="card">
 
         <?php
-            require_once './Model/ConnexionDB.php';
+            require_once './model/ConnexionDB.php';
             $db = ConnexionDB::getInstance();
             if (isset($_POST['formsend'])) {
 

@@ -39,7 +39,7 @@
                 /// Envoi de la réponse au Client
                 deliver_response(200, "[". API_NAME ."] ". $http_method ." request : Read Data OK", $matchingData);
             } catch (Exception $e) {
-                deliver_response(404, $e->getMessage(), NULL);
+                deliver_response(400, $e->getMessage(), NULL);
             }
             break;
         /// Cas de la méthode POST
@@ -62,9 +62,11 @@
                 $bearer_token = get_bearer_token();
                 validation_token($bearer_token, $http_method);
                 
-                /// Vérification du role de l'utilisateur (publisher ou moderator)
-                if(get_role_token($bearer_token) !== "publisher" && get_role_token($bearer_token) !== "moderator") 
-                    throw new Exception("[". API_NAME ."] ". $http_method ." request : Erreur vous n'avez pas les droits pour accéder à ce post.");
+                /// Vérification du role de l'utilisateur publisher
+                if(get_role_token($bearer_token) !== "publisher") {
+                    deliver_response(403, "[". API_NAME ."] ". $http_method ." request : Erreur vous n'avez pas les droits pour créer un article.", NULL);
+                    exit;
+                }
 
                 $q = $db->prepare("INSERT INTO posts (title, contenu, date_ajout, id_user) 
                                     VALUE (:title, :contenu, :date_ajout, :id_user)");
@@ -106,17 +108,21 @@
                 $bearer_token = get_bearer_token();
                 validation_token($bearer_token, $http_method);
                 
-                /// Vérification du role de l'utilisateur (publisher ou moderator)
-                if(get_role_token($bearer_token) !== "publisher" && get_role_token($bearer_token) !== "moderator") 
-                    throw new Exception("[". API_NAME ."] ". $http_method ." request : Erreur vous n'avez pas les droits pour accéder à ce post.");
+                /// Vérification du role de l'utilisateur publisher
+                if(get_role_token($bearer_token) !== "publisher") {
+                    deliver_response(403, "[". API_NAME ."] ". $http_method ." request : Erreur vous n'avez pas les droits pour accéder à cette article.", NULL);
+                    exit;
+                }
 
                 if (!empty($_GET['id'])) {
                     $id = filter_var($_GET['id'], FILTER_SANITIZE_NUMBER_INT);
 
                     if (is_Id($id, $db)) {
-                        /// Vérification de l'appartenance de l'utilisateur au post pour les publishers
-                        if(!is_owner($bearer_token, $db, $id) && get_role_token($bearer_token) === "publisher")
-                            throw new Exception("[". API_NAME ."] ". $http_method ." request : Erreur vous n'avez pas les droits pour accéder à ce post.");
+                        /// Vérification de l'appartenance de l'utilisateur au post
+                        if(!is_owner($bearer_token, $db, $id)) {
+                            deliver_response(403, "[". API_NAME ."] ". $http_method ." request : Erreur vous n'avez pas les droits pour accéder à cette article.", NULL);
+                            exit;
+                        }
 
                         $sql = "UPDATE posts SET";
                         $parametre = [];
@@ -136,12 +142,8 @@
                         $parametre['id_post'] = $id;
                         $parametre['date_modif'] = date('Y-m-d H:i:s');
 
-                        var_dump($sql);
-                        var_dump($parametre);
-
                         $q = $db->prepare($sql);
                         $q->execute($parametre);
-
 
                         $c = $db->prepare("SELECT * FROM posts WHERE id_post = :id_post");
                         $c->execute(['id_post' => $id]);
@@ -180,9 +182,11 @@
                 $bearer_token = get_bearer_token();
                 validation_token($bearer_token, $http_method);
                 
-                /// Vérification du role de l'utilisateur (publisher ou moderator)
-                if(get_role_token($bearer_token) !== "publisher" && get_role_token($bearer_token) !== "moderator") 
-                    throw new Exception("[". API_NAME ."] ". $http_method ." request : Erreur vous n'avez pas les droits pour accéder à ce post.");
+                /// Vérification du role de l'utilisateur publisher
+                if(get_role_token($bearer_token) !== "publisher") {
+                    deliver_response(403, "[". API_NAME ."] ". $http_method ." request : Erreur vous n'avez pas les droits pour accéder à cette article.", NULL);
+                    exit;
+                }
                 
                 
 
@@ -190,9 +194,11 @@
                     $id = filter_var($_GET['id'], FILTER_SANITIZE_NUMBER_INT);
 
                     if (is_Id($id, $db)) {
-                        /// Vérification de l'appartenance de l'utilisateur au post pour les publishers
-                        if(!is_owner($bearer_token, $db, $id) && get_role_token($bearer_token) === "publisher")
-                            throw new Exception("[". API_NAME ."] ". $http_method ." request : Erreur vous n'avez pas les droits pour accéder à ce post.");
+                        /// Vérification de l'appartenance de l'utilisateur au post
+                        if(!is_owner($bearer_token, $db, $id)) {
+                            deliver_response(403, "[". API_NAME ."] ". $http_method ." request : Erreur vous n'avez pas les droits pour accéder à cette article.", NULL);
+                            exit;
+                        }
 
                         $q = $db->prepare('UPDATE posts SET title = :title, 
                                                             content = :content, 
@@ -230,8 +236,10 @@
                 validation_token($bearer_token, $http_method);
                 
                 /// Vérification du role de l'utilisateur (publisher ou moderator)
-                if(get_role_token($bearer_token) !== "publisher" && get_role_token($bearer_token) !== "moderator") 
-                    throw new Exception("[". API_NAME ."] ". $http_method ." request : Erreur vous n'avez pas les droits pour accéder à ce post.");
+                if(get_role_token($bearer_token) !== "publisher" && get_role_token($bearer_token) !== "moderator") {
+                    deliver_response(403, "[". API_NAME ."] ". $http_method ." request : Erreur vous n'avez pas les droits pour accéder à cette article.", NULL);
+                    exit;
+                }
 
                 /// Récupération de l'identifiant de la ressource envoyé par le Client
                 if (!empty($_GET['id'])) {
@@ -240,8 +248,10 @@
                     if (is_Id($id, $db)) {
 
                         /// Vérification de l'appartenance de l'utilisateur au post pour les publishers
-                        if(!is_owner($bearer_token, $db, $id) && get_role_token($bearer_token) === "publisher")
-                            throw new Exception("[". API_NAME ."] ". $http_method ." request : Erreur vous n'avez pas les droits pour accéder à ce post.");
+                        if(!is_owner($bearer_token, $db, $id) && get_role_token($bearer_token) === "publisher") {
+                            deliver_response(403, "[". API_NAME ."] ". $http_method ." request : Erreur vous n'avez pas les droits pour accéder à cette article.", NULL);
+                            exit;
+                        }
 
                         /// Récupération des données de la ressource à supprimer
                         $c = $db->prepare("SELECT * FROM posts WHERE id_post = :id_post");
@@ -261,7 +271,7 @@
                     throw new Exception("[". API_NAME ."] ". $http_method ." request : Identifiant id est requis.");
                 }
             } catch (Exception $e) {
-                deliver_response(404, $e->getMessage(), NULL);
+                deliver_response(400, $e->getMessage(), NULL);
             }
             
             break;
@@ -297,7 +307,7 @@
      * @author Christopher ASIN <https://github.com/RiperPro03>
      */
     function is_Id($id, $db) {
-        $c = $db->prepare("SELECT id_post FROM post WHERE id_post = :id_post");
+        $c = $db->prepare("SELECT id_post FROM posts WHERE id_post = :id_post");
         $c->execute(['id_post' => $id]);
         $nbId = $c->rowCount();
 
@@ -370,7 +380,8 @@
         if ($bearer_token !== null && is_jwt_valid($bearer_token, SECRET_KEY)) {
             return true;
         } else {
-            throw new Exception("[". API_NAME ."] ". $http_method ." request : Erreur token invalide.");
+            deliver_response(401, "[". API_NAME ."] ". $http_method ." request : Erreur token a expiré ou est invalide.", NULL);
+            exit;
         }
     }
 
@@ -382,7 +393,7 @@
      * @author Christopher ASIN <https://github.com/RiperPro03>
      */
     function is_owner($token, $db, $id_post) {
-        $q = $db->prepare("SELECT id_user FROM post WHERE id_user = :id_user AND id_post = :id_post");
+        $q = $db->prepare("SELECT id_user FROM posts WHERE id_user = :id_user AND id_post = :id_post");
         $q->execute(['id_user' => get_id_token($token), 'id_post' => $id_post]);
         $nbId = $q->rowCount();
 
