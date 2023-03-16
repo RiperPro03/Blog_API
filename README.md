@@ -71,7 +71,7 @@ L'objectif général de ce projet est de proposer une solution pour la gestion d
 
 
 ### Créer un article
-Role requis: publisher ou moderator
+Role requis: publisher
 
 ```http
   POST /api/gestiArticle/
@@ -82,7 +82,7 @@ Role requis: publisher ou moderator
 | `content`      | `string` | **Required**. Contenu de l'article |
 
 ### Modifier un article
-Role requis: publisher ou moderator
+Role requis: publisher
 
 ```http
   PUT /api/gestiArticle/${id}
