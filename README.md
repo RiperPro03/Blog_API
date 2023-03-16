@@ -71,7 +71,7 @@ L'objectif général de ce projet est de proposer une solution pour la gestion d
 
 
 ### Créer un article
-Role requis: publisher
+Role requis: publisher ou moderator
 
 ```http
   POST /api/gestiArticle/
@@ -105,7 +105,7 @@ Role requis: publisher ou moderator
 
 ### Liker un article
 ```http
-  PATCH /api/gestiArticle/${id}
+  POST /api/gestiArticle/like/${id}
 ```	
 | Parameter | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
