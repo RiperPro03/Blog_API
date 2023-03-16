@@ -105,7 +105,7 @@ Role requis: publisher ou moderator
 
 ### Liker un article
 ```http
-  PATCH /api/gestiArticle/${id}
+  POST /api/gestiArticle/like/${id}
 ```	
 | Parameter | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
