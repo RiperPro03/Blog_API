@@ -15,7 +15,7 @@
             <a href="./login">login</a>
         </div>
         <div class="Client-box">
-            <a href="./ClientAPI.php">Client</a>
+            <a href="./accueil.php">Accueil</a>
         </div>
         <div class="Client-box">
             <a href="./testUI/testCartePost.php">TestPost</a>

@@ -2,7 +2,7 @@
     require_once './Model/ClientREST.php';
 
     //Récupération des données
-    $client = new ClientREST('http://localhost/projet/TP-API/projet-r401/api/mon-api/');
+    $client = new ClientREST('http://localhost/Blog_R401/gestiArticle/');
     $client_auth = new ClientREST('https://blog-r401.go.yo.fr/api/auth/');
     $r = $client_auth->post(array('username' => 'testModo', 'password' => 'iutinfo'));
     echo '<pre>' . htmlspecialchars($r) . '</pre>';

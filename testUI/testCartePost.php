@@ -15,9 +15,13 @@
     ?>
     <div class="Main-Content">
         <div class="Card-Main-Box">
-            <div class="Card-Option">
-                <a href="" class="Modifier">Modifier</a>
-                <a href="" class="Supprimer">Supprimer</a>
+            <div class="Card-Option-Mod">
+                <div class="Mod-Option">
+                    <a href="" class="Details">Details</a>
+                </div>
+                <div class="Edit-Del-Option">
+                    <a href="" class="Supprimer">Supprimer</a>
+                </div>
             </div>
             <div class="Post-header">
                 <div class="Title">

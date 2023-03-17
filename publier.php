@@ -26,7 +26,7 @@
                     <textarea type="text" id="content" class="Input Input-Content"></textarea>
                 </div>
                 <div class="Edit-post-option">
-                    <a class="Edit-post-option-button Annuler"> Annuler</a>
+                    <a class="Edit-post-option-button Annuler" onclick = "history.back()"> Annuler</a>
                     <input type="submit" class="Edit-post-option-button Valider" value="Valider">
                 </div>
             </form>

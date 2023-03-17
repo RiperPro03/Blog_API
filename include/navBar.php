@@ -17,6 +17,6 @@
         </div>
     </div>
     <div class="connexion">
-        <a href="">Profil</a>        
+        <a href="./login.php">Profil</a>        
     </div>
 </nav>

@@ -91,19 +91,19 @@
                             <div class="Like-Dislike-Button">
                                 <p class="Like-vote">'.$this->nbLike.' Like</p>
                                 <p class="Dislike-vote">'.$this->nbDislike.' Dislike</p>
-                                <a href="../like.php?id_pub='.$this->id_Pub.'" class="Like">Like</a>
-                                <a href="../dislike.php?id_pub='.$this->id_Pub.'" class="Dislike">Dislike</a>
+                                <a href="./like.php?id_pub='.$this->id_Pub.'" class="Like">Like</a>
+                                <a href="./dislike.php?id_pub='.$this->id_Pub.'" class="Dislike">Dislike</a>
                             </div>
                         </div>
                     </div>"';
          }
 
          /**
-         * Retourne la carte HTML de l'article pour les articles publier par l'utilisateur actuel et pour les modérateurs
+         * Retourne la carte HTML de l'article pour les articles publier par l'utilisateur actuel
          * @return string Carte HTML de l'article
          * @access public
          */
-         public function getCartePostAllRight() {
+         public function getCarteMyPost() {
             return '"<div class="Card-Main-Box">
                         <div class="Card-Option">
                             <a href="" class="Modifier">Modifier</a>
@@ -128,8 +128,49 @@
                             <div class="Like-Dislike-Button">
                                 <p class="Like-vote">'.$this->nbLike.' Like</p>
                                 <p class="Dislike-vote">'.$this->nbDislike.' Dislike</p>
-                                <a href="../like.php?id_pub='.$this->id_Pub.'" class="Like">Like</a>
-                                <a href="../dislike.php?id_pub='.$this->id_Pub.'" class="Dislike">Dislike</a>
+                                <a href="./like.php?id_pub='.$this->id_Pub.'" class="Like">Like</a>
+                                <a href="./dislike.php?id_pub='.$this->id_Pub.'" class="Dislike">Dislike</a>
+                            </div>
+                        </div>
+                    </div>"';
+         }
+
+         /**
+         * Retourne la carte HTML de l'article pour les articles publier par l'utilisateur actuel
+         * @return string Carte HTML de l'article
+         * @access public
+         */
+        public function getCartePostModerateur() {
+            return '"<div class="Card-Main-Box">
+                        <div class="Card-Option-Mod">
+                            <div class="Mod-Option">
+                                <a href="" class="Details">Details</a>
+                            </div>
+                            <div class="Edit-Del-Option">
+                                <a href="" class="Supprimer">Supprimer</a>
+                            </div>
+                        </div>
+                        <div class="Post-header">
+                            <div class="Title">
+                                <h3>'.$this->titre.'</h3>
+                            </div>
+                            <div class="Post-author"><p>'.$this->auteur.'</p>
+                            </div>
+                        </div>
+                        <div class="Post-content">
+                            <label>Message:</label>
+                            <p>'.$this->contenu.'</p>
+                        </div>
+                        <div class="Post-Footer">
+                            <div class="Post-Date">
+                                <label>Date de publication:</label>
+                                <p>'.$this->datePubli.'</p>
+                            </div>
+                            <div class="Like-Dislike-Button">
+                                <p class="Like-vote">'.$this->nbLike.' Like</p>
+                                <p class="Dislike-vote">'.$this->nbDislike.' Dislike</p>
+                                <a href="./like.php?id_pub='.$this->id_Pub.'" class="Like">Like</a>
+                                <a href="./dislike.php?id_pub='.$this->id_Pub.'" class="Dislike">Dislike</a>
                             </div>
                         </div>
                     </div>"';

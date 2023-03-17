@@ -48,7 +48,7 @@
                         <input type="password" name="pass" required="required" autocomplete="off">
                     </div>
                     <div class="Option-login">
-                        <a href="" class="Option-login-button Annuler">Annuler</a>
+                        <a class="Option-login-button Annuler" onclick ="history.back()">Annuler</a>
                         <input type="submit" value="Connexion" name="formlogin" class="Option-login-button Connexion">
                     </div>
                 </form>
