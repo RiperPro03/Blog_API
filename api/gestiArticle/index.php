@@ -24,17 +24,138 @@
                     $id = filter_var($_GET['id'], FILTER_SANITIZE_NUMBER_INT);
                     
                     if (is_Id($id, $db)) {
-                        $q = $db->prepare("SELECT * FROM posts WHERE id_user = :id_user");
-                        $q->execute(['id_user' => $id]);
-                        $matchingData = $q->fetch();
+
+                        /// Vérification de la validité du token
+                        $bearer_token = get_bearer_token();
+
+                        if ($bearer_token !== null && is_jwt_valid($bearer_token, SECRET_KEY)) {
+                            /// Vérification du role de l'utilisateur (publisher ou moderator)
+                            if(get_role_token($bearer_token) !== "publisher" && get_role_token($bearer_token) !== "moderator") {
+                                deliver_response(403, "[". API_NAME ."] ". $http_method ." request : Erreur vous n'avez pas les droits pour accéder à cette ressource.", NULL);
+                                exit;
+                            }
+
+                            $q = $db->prepare("SELECT p.id_post, p.title, p.content, p.date_ajout, p.date_modif, p.id_user,
+                                                SUM(CASE WHEN a.is_like = 1 THEN 1 ELSE 0 END) as nb_like,
+                                                SUM(CASE WHEN a.is_like = 0 THEN 1 ELSE 0 END) AS nb_dislike
+                                                FROM posts p 
+                                                LEFT JOIN aimer a ON p.id_post = a.id_post
+                                                WHERE p.id_post = :id_post
+                                                GROUP BY p.id_post");
+                            $q->execute(['id_post' => $id]);
+
+                            /// Traitement des données
+                            $matchingData = new ArrayObject();
+                            foreach ($q->fetchAll() as $post) {
+                                $s = $db->prepare("SELECT id_user, username FROM users WHERE id_user = :id_user");
+                                $s->execute(['id_user' => $post['id_user']]);
+
+                                $post['author'] = $s->fetchAll();
+
+                                /// Affichage du details des likes et dislike pour les modérateurs
+                                if (get_role_token($bearer_token) == "moderator") {
+                                    $c = $db->prepare("SELECT u.id_user, u.username, a.is_like FROM users u
+                                                        JOIN aimer a ON u.id_user = a.id_user
+                                                        JOIN posts p ON a.id_post = p.id_post
+                                                        WHERE p.id_post = :id_post");
+                                    $c->execute(['id_post' => $post['id_post']]);
+
+                                    $post['appreciations'] = $c->fetchAll();
+                                }
+
+                                unset($post['id_user']);
+
+                                $matchingData->append($post);
+                            }
+
+                        } else {
+                            $q = $db->prepare("SELECT p.id_post, p.title, p.content, p.date_ajout, p.date_modif, p.id_user
+                                                FROM posts p 
+                                                WHERE p.id_post = :id_post
+                                                GROUP BY p.id_post");
+                            $q->execute(['id_post' => $id]);
+
+                            /// Traitement des données
+                            $matchingData = new ArrayObject();
+                            foreach ($q->fetchAll() as $post) {
+                                $s = $db->prepare("SELECT id_user, username FROM users WHERE id_user = :id_user");
+                                $s->execute(['id_user' => $post['id_user']]);
+
+                                $post['author'] = $s->fetchAll();
+
+                                unset($post['id_user']);
+
+                                $matchingData->append($post);
+                            }
+                        }
                     } else {
                         throw new Exception("[". API_NAME ."] ". $http_method ." request : Aucun post ne correspond à cet identifiant.");
                     }
                     
                 } else {
-                    $q = $db->prepare("SELECT * FROM posts");
-                    $q->execute();
-                    $matchingData = $q->fetchAll();
+
+                    /// Vérification de la validité du token
+                    $bearer_token = get_bearer_token();
+
+                    if ($bearer_token !== null && is_jwt_valid($bearer_token, SECRET_KEY)) {
+                        /// Vérification du role de l'utilisateur (publisher ou moderator)
+                        if(get_role_token($bearer_token) !== "publisher" && get_role_token($bearer_token) !== "moderator") {
+                            deliver_response(403, "[". API_NAME ."] ". $http_method ." request : Erreur vous n'avez pas les droits pour accéder à cette ressource.", NULL);
+                            exit;
+                        }
+
+                        $q = $db->prepare("SELECT p.id_post, p.title, p.content, p.date_ajout, p.date_modif, p.id_user,
+                                            SUM(CASE WHEN a.is_like = 1 THEN 1 ELSE 0 END) as nb_like,
+                                            SUM(CASE WHEN a.is_like = 0 THEN 1 ELSE 0 END) AS nb_dislike
+                                            FROM posts p 
+                                            LEFT JOIN aimer a ON p.id_post = a.id_post
+                                            GROUP BY p.id_post");
+                        $q->execute();
+
+                        /// Traitement des données
+                        $matchingData = new ArrayObject();
+                        foreach ($q->fetchAll() as $post) {
+                            $s = $db->prepare("SELECT id_user, username FROM users WHERE id_user = :id_user");
+                            $s->execute(['id_user' => $post['id_user']]);
+
+                            $post['author'] = $s->fetchAll();
+
+                            /// Affichage du details des likes et dislike pour les modérateurs
+                            if (get_role_token($bearer_token) == "moderator") {
+                                $c = $db->prepare("SELECT u.id_user, u.username, a.is_like FROM users u
+                                                    JOIN aimer a ON u.id_user = a.id_user
+                                                    JOIN posts p ON a.id_post = p.id_post
+                                                    WHERE p.id_post = :id_post");
+                                $c->execute(['id_post' => $post['id_post']]);
+
+                                $post['appreciations'] = $c->fetchAll();
+                            }
+
+                            unset($post['id_user']);
+
+                            $matchingData->append($post);
+                        }
+
+                    } else {
+                        $q = $db->prepare("SELECT p.id_post, p.title, p.content, p.date_ajout, p.date_modif, p.id_user
+                                            FROM posts p 
+                                            GROUP BY p.id_post");
+                        $q->execute();
+
+                        /// Traitement des données
+                        $matchingData = new ArrayObject();
+                        foreach ($q->fetchAll() as $post) {
+                            $s = $db->prepare("SELECT id_user, username FROM users WHERE id_user = :id_user");
+                            $s->execute(['id_user' => $post['id_user']]);
+
+                            $post['author'] = $s->fetchAll();
+
+                            unset($post['id_user']);
+
+                            $matchingData->append($post);
+                        }
+                    }
+
                 }
                 /// Envoi de la réponse au Client
                 deliver_response(200, "[". API_NAME ."] ". $http_method ." request : Read Data OK", $matchingData);
@@ -94,7 +215,6 @@
                 $json_data = json_decode($postedData, true);
                 if (is_null($json_data)) throw new Exception("[". API_NAME ."] ". $http_method ." request : Erreur lors du décodage des données.");
 
-                //Eviter la faille XSS
                 $postedData = $json_data;
                 if (!isset($postedData['title']) && !isset($postedData['content'])) {
                     throw new Exception("[". API_NAME ."] ". $http_method ." request : Erreur vous devez donner au moins une des clés suivantes : title, content.");
@@ -341,19 +461,6 @@
         $payload = base64_decode($tokenParts[1]);
         $role = json_decode($payload)->role;
         return $role;
-    }
-
-    /**
-     * Récupérer le nom d'utilisateur d'un utilisateur à partir de son token JWT
-     * @param string $token Le token de l'utilisateur
-     * @return string Le nom d'utilisateur de l'utilisateur
-     * @author Christopher ASIN <https://github.com/RiperPro03>
-     */
-    function get_username_token($token) {
-        $tokenParts = explode('.', $token);
-        $payload = base64_decode($tokenParts[1]);
-        $username = json_decode($payload)->username;
-        return $username;
     }
 
     /**

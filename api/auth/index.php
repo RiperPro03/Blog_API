@@ -52,7 +52,6 @@
                 ];
                 $payload = [
                     'id_user' => $result['id_user'],
-                    'username' => $username,
                     'role' => $result['role'],
                     'exp' => time() + 3600
                 ];
