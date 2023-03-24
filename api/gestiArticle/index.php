@@ -1,6 +1,6 @@
 <?php
     /**
-     * API pour la gestion des articles
+     * API REST pour la gestion des articles
      * Affichage, création, modification et suppression des articles
      * Méthodes HTTP : GET, POST, PUT, PATCH, DELETE
      * @author Christopher ASIN <https://github.com/RiperPro03>
@@ -198,11 +198,11 @@
                     exit;
                 }
 
-                $q = $db->prepare("INSERT INTO posts (title, contenu, date_ajout, id_user) 
-                                    VALUE (:title, :contenu, :date_ajout, :id_user)");
+                $q = $db->prepare("INSERT INTO posts (title, content, date_ajout, id_user) 
+                                    VALUE (:title, :content, :date_ajout, :id_user)");
                 $q->execute([
                     'title' => $title,
-                    'contenu' => $content,
+                    'content' => $content,
                     'date_ajout' => date('Y-m-d H:i:s'),
                     'id_user' => get_id_token($bearer_token)
                 ]);
@@ -316,8 +316,6 @@
                     deliver_response(403, "[". API_NAME ."] ". $http_method ." request : Erreur vous n'avez pas les droits pour accéder à cette article.", NULL);
                     exit;
                 }
-                
-                
 
                 if (!empty($_GET['id'])) {
                     $id = filter_var($_GET['id'], FILTER_SANITIZE_NUMBER_INT);

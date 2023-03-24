@@ -40,7 +40,7 @@ L'objectif général de ce projet est de proposer une solution pour la gestion d
 
 # API Auth
 
-### Obtenir un token JWT
+## Obtenir un token JWT
 
 ```http
   POST /api/auth/
@@ -53,13 +53,13 @@ L'objectif général de ce projet est de proposer une solution pour la gestion d
 
 # API gestiArticle
 
-### Récupérer tout les articles
+## Récupérer tout les articles
 
 ```http
   GET /api/gestiArticle/
 ```
 
-### Récupérer les articles à partir d'un id
+## Récupérer les articles à partir d'un id
 
 ```http
   GET /api/gestiArticle/${id}
@@ -70,7 +70,7 @@ L'objectif général de ce projet est de proposer une solution pour la gestion d
 | `id`      | `string` | **Required**. Id de l'article à recherher |
 
 
-### Créer un article
+## Créer un article
 Role requis: publisher
 
 ```http
@@ -81,7 +81,7 @@ Role requis: publisher
 | `title`      | `string` | **Required**. Titre de l'article |
 | `content`      | `string` | **Required**. Contenu de l'article |
 
-### Modifier un article
+## Modifier un article
 Role requis: publisher
 
 ```http
@@ -103,11 +103,44 @@ Role requis: publisher ou moderator
 | :-------- | :------- | :-------------------------------- |
 | `id`      | `string` | **Required**. Id de l'article à supprimer |
 
-### Liker un article
+# API Like
+
+## Récupérer les articles likés et dislikés par utilisateur
+Role requis: moderator
+```http
+  GET /api/gestiArticle/like/
+```
+
+## Récupérer les likes et dislikes d'un article
+Role requis: moderator
+```http
+  GET /api/gestiArticle/like/${id}
+```
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `id`      | `string` | **Required**. Id de l'article à recherher (id_post) |
+
+## Liker un article
 ```http
   POST /api/gestiArticle/like/${id}
 ```	
 | Parameter | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
-| `id`      | `string` | **Required**. Id de l'article à liker |
-| `like`      | `boolean` | **Required**. true pour liker, false pour disliker |
+| `id`      | `string` | **Required**. Id de l'article à liker (id_post) |
+| `like`      | `boolean` | **Required**. 1 pour liker, 0 pour disliker |
+
+## Modifier un like
+Details: On peut modifer seulement le like ou le dislike appartenant à l'utilisateur connecté
+```http
+  PUT /api/gestiArticle/like/${id}
+```
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `id`      | `string` | **Required**. Id de l'article à liker (id_post) |
+| `like`      | `boolean` | **Required**. 1 pour liker, 0 pour disliker |
+
+### Supprimer un like
+Details: On peut supprimer seulement le like ou le dislike appartenant à l'utilisateur connecté
+```http
+  DELETE /api/gestiArticle/like/${id}
+```
