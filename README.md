@@ -93,7 +93,7 @@ Role requis: publisher
 | `title`      | `string` | **Required**. Titre de l'article |
 | `content`      | `string` | **Required**. Contenu de l'article |
 
-### Supprimer un article
+## Supprimer un article
 Role requis: publisher ou moderator
 
 ```http
