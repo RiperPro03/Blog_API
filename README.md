@@ -144,3 +144,6 @@ Details: On peut supprimer seulement le like ou le dislike appartenant à l'util
 ```http
   DELETE /api/gestiArticle/like/${id}
 ```
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `id`      | `string` | **Required**. Id de l'article à supprimer (id_post) |
