@@ -129,7 +129,7 @@ Role requis: moderator
 | `id`      | `string` | **Required**. Id de l'article à liker ou disliker (id_post) |
 | `like`      | `boolean` | **Required**. 1 pour liker, 0 pour disliker |
 
-## Modifier un like
+## Modifier un like ou dislike
 Details: On peut modifer seulement le like ou le dislike appartenant à l'utilisateur connecté
 ```http
   PUT /api/gestiArticle/like/${id}
@@ -139,7 +139,7 @@ Details: On peut modifer seulement le like ou le dislike appartenant à l'utilis
 | `id`      | `string` | **Required**. Id de l'article où modifier le like ou dislike (id_post) |
 | `like`      | `boolean` | **Required**. 1 pour liker, 0 pour disliker |
 
-## Supprimer un like
+## Supprimer un like ou dislike
 Details: On peut supprimer seulement le like ou le dislike appartenant à l'utilisateur connecté
 ```http
   DELETE /api/gestiArticle/like/${id}
