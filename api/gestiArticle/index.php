@@ -1,4 +1,13 @@
 <?php
+    /**
+     * API pour la gestion des articles
+     * Affichage, création, modification et suppression des articles
+     * Méthodes HTTP : GET, POST, PUT, PATCH, DELETE
+     * @author Christopher ASIN <https://github.com/RiperPro03>
+     * @author Henri JEZEQUEL <https://github.com/HenriJez>
+     * @author Anthony LOZANO <https://github.com/Anthooooooo>
+     */
+
     /// Récupération de la biliothèque JWT
     require_once '../../model/jwt_utils.php';
 
@@ -198,10 +207,10 @@
                     'id_user' => get_id_token($bearer_token)
                 ]);
                 
-                $matchingData = lastData($db, "posts");
+                $matchingData = lastData($db);
 
                 /// Envoi de la réponse au Client
-                deliver_response(201, "[". API_NAME ."] ". $http_method ." request : enregistrement ok", $matchingData);
+                deliver_response(201, "[". API_NAME ."] ". $http_method ." request : Post enregistrement ok", $matchingData);
             } catch (Exception $e) {
                 deliver_response(400, $e->getMessage(), NULL);
             }
@@ -270,7 +279,7 @@
                         $matchingData = $c->fetch();
 
                         /// Envoi de la réponse au Client
-                        deliver_response(200, "[". API_NAME ."] ". $http_method ." request : mise à jour ok", $matchingData);
+                        deliver_response(200, "[". API_NAME ."] ". $http_method ." request : Post mise à jour ok", $matchingData);
                     } else {
                         throw new Exception("[". API_NAME ."] ". $http_method ." request : Aucune phrase ne correspond à cet identifiant.");
                     }
@@ -336,7 +345,7 @@
                         $matchingData = $c->fetch();
 
                         /// Envoi de la réponse au Client
-                        deliver_response(200, "[". API_NAME ."] ". $http_method ." request : mise à jour ok", $matchingData);
+                        deliver_response(200, "[". API_NAME ."] ". $http_method ." request : Post mise à jour ok", $matchingData);
                     } else {
                         throw new Exception("[". API_NAME ."] ". $http_method ." request : Aucune phrase ne correspond à cet identifiant.");
                     }

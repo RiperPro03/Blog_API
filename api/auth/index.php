@@ -1,4 +1,10 @@
 <?php
+    /**
+     * API Authentification JWT
+     * Génère un token JWT pour un utilisateur authentifié
+     * @author Christopher ASIN <https://github.com/RiperPro03>
+     */
+
     /// Récupération de la biliothèque JWT
     require_once '../../model/jwt_utils.php';
 
