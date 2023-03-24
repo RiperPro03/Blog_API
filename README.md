@@ -37,6 +37,7 @@ L'objectif général de ce projet est de proposer une solution pour la gestion d
 
 - [Henri JEZEQUEL](https://github.com/HenriJez)
 
+------
 
 # API Auth
 
@@ -50,6 +51,7 @@ L'objectif général de ce projet est de proposer une solution pour la gestion d
 | `username` | `string` | **Required**. Votre username |
 | `password` | `string` | **Required**. Votre password |
 
+------
 
 # API gestiArticle
 
@@ -102,6 +104,8 @@ Role requis: publisher ou moderator
 | Parameter | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
 | `id`      | `string` | **Required**. Id de l'article à supprimer |
+
+------
 
 # API Like
 
