@@ -120,13 +120,13 @@ Role requis: moderator
 | :-------- | :------- | :-------------------------------- |
 | `id`      | `string` | **Required**. Id de l'article à recherher (id_post) |
 
-## Liker un article
+## Liker ou disliker un article
 ```http
   POST /api/gestiArticle/like/${id}
 ```	
 | Parameter | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
-| `id`      | `string` | **Required**. Id de l'article à liker (id_post) |
+| `id`      | `string` | **Required**. Id de l'article à liker ou disliker (id_post) |
 | `like`      | `boolean` | **Required**. 1 pour liker, 0 pour disliker |
 
 ## Modifier un like
@@ -136,14 +136,14 @@ Details: On peut modifer seulement le like ou le dislike appartenant à l'utilis
 ```
 | Parameter | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
-| `id`      | `string` | **Required**. Id de l'article à liker (id_post) |
+| `id`      | `string` | **Required**. Id de l'article où modifier le like ou dislike (id_post) |
 | `like`      | `boolean` | **Required**. 1 pour liker, 0 pour disliker |
 
-### Supprimer un like
+## Supprimer un like
 Details: On peut supprimer seulement le like ou le dislike appartenant à l'utilisateur connecté
 ```http
   DELETE /api/gestiArticle/like/${id}
 ```
 | Parameter | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
-| `id`      | `string` | **Required**. Id de l'article à supprimer (id_post) |
+| `id`      | `string` | **Required**. Id de l'article où supprimer le like ou dislike (id_post) |
