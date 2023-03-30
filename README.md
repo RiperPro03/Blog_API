@@ -39,8 +39,9 @@ https://blog-r401.go.yo.fr/api/gestiArticle/my/
 
 - [Christopher Asin](https://www.github.com/RiperPro03) 
 
-
 - [Henri JEZEQUEL](https://github.com/HenriJez)
+
+- [Anthony LOZANO](https://github.com/Anthooooooo)
 
 ------
 
