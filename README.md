@@ -28,7 +28,12 @@ L'objectif général de ce projet est de proposer une solution pour la gestion d
 
 - Un utilisateur non authentifié peut :
     - Consulter les messages existants. Seules les informations suivantes doivent être disponibles : auteur, date de publication, contenu.
-
+  
+# Lien vers les API
+https://blog-r401.go.yo.fr/api/auth/  
+https://blog-r401.go.yo.fr/api/gestiArticle/  
+https://blog-r401.go.yo.fr/api/gestiArticle/like/  
+https://blog-r401.go.yo.fr/api/gestiArticle/my/  
 
 # Authors
 
@@ -107,7 +112,7 @@ Role requis: publisher ou moderator
 
 ------
 
-# API Like
+# Ressource Like de l'API gestiArticle
 
 ## Récupérer les articles likés et dislikés par utilisateur
 Role requis: moderator
@@ -135,7 +140,7 @@ Role requis: moderator ou publisher
 | `like`      | `boolean` | **Required**. 1 pour liker, 0 pour disliker |
 
 ## Modifier un like ou dislike
-Role requis: moderator ou publisher
+Role requis: moderator ou publisher  
 Details: On peut modifer seulement le like ou le dislike appartenant à l'utilisateur connecté
 ```http
   PUT /api/gestiArticle/like/${id}
@@ -146,7 +151,7 @@ Details: On peut modifer seulement le like ou le dislike appartenant à l'utilis
 | `like`      | `boolean` | **Required**. 1 pour liker, 0 pour disliker |
 
 ## Supprimer un like ou dislike
-Role requis: moderator ou publisher
+Role requis: moderator ou publisher  
 Details: On peut supprimer seulement le like ou le dislike appartenant à l'utilisateur connecté
 ```http
   DELETE /api/gestiArticle/like/${id}
@@ -157,19 +162,19 @@ Details: On peut supprimer seulement le like ou le dislike appartenant à l'util
 
 ------
 
-# Ressource My
+# Ressource My de API gestiArticle
 
 ## Récupérer tout les articles d'un publisher
 Role requis: publisher
 
 ```http
-  GET /api/gestiArticle/
+  GET /api/gestiArticle/my/
 ```
 ## Récupérer les articles d'un publisher à partir d'un id
 Role requis: publisher
 
 ```http
-  GET /api/gestiArticle/${id}
+  GET /api/gestiArticle/my/${id}
 ```
 
 | Parameter | Type     | Description                       |
