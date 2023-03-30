@@ -125,6 +125,7 @@ Role requis: moderator
 | `id`      | `string` | **Required**. Id de l'article à recherher (id_post) |
 
 ## Liker ou disliker un article
+Role requis: moderator ou publisher
 ```http
   POST /api/gestiArticle/like/${id}
 ```	
@@ -134,6 +135,7 @@ Role requis: moderator
 | `like`      | `boolean` | **Required**. 1 pour liker, 0 pour disliker |
 
 ## Modifier un like ou dislike
+Role requis: moderator ou publisher
 Details: On peut modifer seulement le like ou le dislike appartenant à l'utilisateur connecté
 ```http
   PUT /api/gestiArticle/like/${id}
@@ -144,6 +146,7 @@ Details: On peut modifer seulement le like ou le dislike appartenant à l'utilis
 | `like`      | `boolean` | **Required**. 1 pour liker, 0 pour disliker |
 
 ## Supprimer un like ou dislike
+Role requis: moderator ou publisher
 Details: On peut supprimer seulement le like ou le dislike appartenant à l'utilisateur connecté
 ```http
   DELETE /api/gestiArticle/like/${id}
@@ -151,3 +154,24 @@ Details: On peut supprimer seulement le like ou le dislike appartenant à l'util
 | Parameter | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
 | `id`      | `string` | **Required**. Id de l'article où supprimer le like ou dislike (id_post) |
+
+------
+
+# Ressource My
+
+## Récupérer tout les articles d'un publisher
+Role requis: publisher
+
+```http
+  GET /api/gestiArticle/
+```
+## Récupérer les articles d'un publisher à partir d'un id
+Role requis: publisher
+
+```http
+  GET /api/gestiArticle/${id}
+```
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `id`      | `string` | **Required**. Id de l'article à recherher |
