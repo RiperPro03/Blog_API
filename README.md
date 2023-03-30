@@ -165,13 +165,13 @@ Details: On peut supprimer seulement le like ou le dislike appartenant à l'util
 
 # Ressource My de API gestiArticle
 
-## Récupérer tout les articles d'un publisher
+## Récupérer ses articles
 Role requis: publisher
 
 ```http
   GET /api/gestiArticle/my/
 ```
-## Récupérer les articles d'un publisher à partir d'un id
+## Récupérer ses articles à partir d'un id
 Role requis: publisher
 
 ```http
