@@ -75,7 +75,7 @@ https://blog-r401.go.yo.fr/api/gestiArticle/my/
 
 | Parameter | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
-| `id`      | `string` | **Required**. Id de l'article à recherher |
+| `id`      | `int` | **Required**. Id de l'article à recherher |
 
 
 ## Créer un article
@@ -97,7 +97,7 @@ Role requis: publisher
 ```
 | Parameter | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
-| `id`      | `string` | **Required**. Id de l'article à modifier |
+| `id`      | `int` | **Required**. Id de l'article à modifier |
 | `title`      | `string` | **Required**. Titre de l'article |
 | `content`      | `string` | **Required**. Contenu de l'article |
 
@@ -109,7 +109,7 @@ Role requis: publisher ou moderator
 ```
 | Parameter | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
-| `id`      | `string` | **Required**. Id de l'article à supprimer |
+| `id`      | `int` | **Required**. Id de l'article à supprimer |
 
 ------
 
@@ -128,7 +128,7 @@ Role requis: moderator
 ```
 | Parameter | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
-| `id`      | `string` | **Required**. Id de l'article à recherher (id_post) |
+| `id`      | `int` | **Required**. Id de l'article à recherher (id_post) |
 
 ## Liker ou disliker un article
 Role requis: moderator ou publisher
@@ -137,7 +137,7 @@ Role requis: moderator ou publisher
 ```	
 | Parameter | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
-| `id`      | `string` | **Required**. Id de l'article à liker ou disliker (id_post) |
+| `id`      | `int` | **Required**. Id de l'article à liker ou disliker (id_post) |
 | `like`      | `boolean` | **Required**. 1 pour liker, 0 pour disliker |
 
 ## Modifier un like ou dislike
@@ -148,7 +148,7 @@ Details: On peut modifer seulement le like ou le dislike appartenant à l'utilis
 ```
 | Parameter | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
-| `id`      | `string` | **Required**. Id de l'article où modifier le like ou dislike (id_post) |
+| `id`      | `int` | **Required**. Id de l'article où modifier le like ou dislike (id_post) |
 | `like`      | `boolean` | **Required**. 1 pour liker, 0 pour disliker |
 
 ## Supprimer un like ou dislike
@@ -159,7 +159,7 @@ Details: On peut supprimer seulement le like ou le dislike appartenant à l'util
 ```
 | Parameter | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
-| `id`      | `string` | **Required**. Id de l'article où supprimer le like ou dislike (id_post) |
+| `id`      | `int` | **Required**. Id de l'article où supprimer le like ou dislike (id_post) |
 
 ------
 
@@ -180,4 +180,4 @@ Role requis: publisher
 
 | Parameter | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
-| `id`      | `string` | **Required**. Id de l'article à recherher |
+| `id`      | `int` | **Required**. Id de l'article à recherher |
