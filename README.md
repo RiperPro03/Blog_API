@@ -138,7 +138,7 @@ Role requis: moderator ou publisher
 | Parameter | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
 | `id`      | `int` | **Required**. Id de l'article à liker ou disliker (id_post) |
-| `like`      | `boolean` | **Required**. 1 pour liker, 0 pour disliker |
+| `id_like`      | `boolean` | **Required**. 1 pour liker, 0 pour disliker |
 
 ## Modifier un like ou dislike
 Role requis: moderator ou publisher  
@@ -149,7 +149,7 @@ Details: On peut modifer seulement le like ou le dislike appartenant à l'utilis
 | Parameter | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
 | `id`      | `int` | **Required**. Id de l'article où modifier le like ou dislike (id_post) |
-| `like`      | `boolean` | **Required**. 1 pour liker, 0 pour disliker |
+| `is_like`      | `boolean` | **Required**. 1 pour liker, 0 pour disliker |
 
 ## Supprimer un like ou dislike
 Role requis: moderator ou publisher  
