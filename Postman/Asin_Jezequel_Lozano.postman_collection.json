@@ -202,6 +202,90 @@
 					"response": []
 				},
 				{
+					"name": "Modifier un Article",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF91c2VyIjoiMiIsInJvbGUiOiJwdWJsaXNoZXIiLCJleHAiOjE2ODAyMDgxNTB9.797r0sHeg4Ry1E-f5rEN-avEpJXdG_3vMIry_Ghfhvo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"content\": \"ici c'est un test de post\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://blog-r401.go.yo.fr/api/gestiArticle/",
+							"protocol": "https",
+							"host": [
+								"blog-r401",
+								"go",
+								"yo",
+								"fr"
+							],
+							"path": [
+								"api",
+								"gestiArticle",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modifier un Article",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF91c2VyIjoiMiIsInJvbGUiOiJwdWJsaXNoZXIiLCJleHAiOjE2ODAyMDgxNTB9.797r0sHeg4Ry1E-f5rEN-avEpJXdG_3vMIry_Ghfhvo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Votre Test\",\r\n    \"content\": \"ici c'est un test de post\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://blog-r401.go.yo.fr/api/gestiArticle/",
+							"protocol": "https",
+							"host": [
+								"blog-r401",
+								"go",
+								"yo",
+								"fr"
+							],
+							"path": [
+								"api",
+								"gestiArticle",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Suprimer un article",
 					"request": {
 						"auth": {
