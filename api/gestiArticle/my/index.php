@@ -1,8 +1,8 @@
 <?php
     /**
-     * API REST pour la gestion des likes et dislikes des articles
-     * Affichage, création, modification et suppression des likes et dislikes des articles
-     * Méthodes HTTP : GET, POST, PUT, DELETE
+     * API REST pour récupérer les articles d'un utilisateur
+     * Affichage des articles
+     * Méthodes HTTP : GET
      * @author Christopher ASIN <https://github.com/RiperPro03>
      */
 

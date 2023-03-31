@@ -98,8 +98,8 @@
 
                     /// Vérification de l'existence de l'id_user et id_post dans la base de données
                     if (is_id_in($id_user, $id_post, $db)) throw new Exception("[". API_NAME ."] ". $http_method ." request : Erreur vous avez déjà liké ou disliké cette article.");
-                    if (!exist_id_post($id_post, $db)) throw new Exception("[". API_NAME ."] ". $http_method ." request : Erreur vous devez donner un un post existant (clé id_post n'existe pas).");
-                    if (!exist_id_user($id_user, $db)) throw new Exception("[". API_NAME ."] ". $http_method ." request : Erreur vous devez donner un un utilisateur existant (clé id_user n'existe pas).");
+                    if (!exist_id_post($id_post, $db)) throw new Exception("[". API_NAME ."] ". $http_method ." request : Erreur vous devez donner un post existant (clé id_post n'existe pas).");
+                    if (!exist_id_user($id_user, $db)) throw new Exception("[". API_NAME ."] ". $http_method ." request : Erreur vous devez donner un utilisateur existant (clé id_user n'existe pas).");
                     
                     $q = $db->prepare("INSERT INTO aimer (id_user, id_post, is_like) 
                                     VALUE (:id_user, :id_post, :is_like)");
