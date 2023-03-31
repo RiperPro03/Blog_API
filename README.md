@@ -142,7 +142,7 @@ Role requis: moderator ou publisher
 
 ## Modifier un like ou dislike
 Role requis: moderator ou publisher  
-Details: On peut modifer seulement le like ou le dislike appartenant à l'utilisateur connecté
+Details: La modification du like ou du dislike s’applique l’utilisateur courant
 ```http
   PUT /api/gestiArticle/like/${id}
 ```
@@ -153,7 +153,7 @@ Details: On peut modifer seulement le like ou le dislike appartenant à l'utilis
 
 ## Supprimer un like ou dislike
 Role requis: moderator ou publisher  
-Details: On peut supprimer seulement le like ou le dislike appartenant à l'utilisateur connecté
+Details: La suppression du like ou du dislike s’applique l’utilisateur courant
 ```http
   DELETE /api/gestiArticle/like/${id}
 ```
